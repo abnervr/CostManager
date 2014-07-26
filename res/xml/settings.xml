@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+     <PreferenceCategory 
+        android:title="@string/sms">
+        <CheckBoxPreference
+            android:key="read_sms"
+            android:title="@string/monitorar_sms"
+            android:defaultValue="false" />
+        
+        <MultiSelectListPreference 
+            android:key="sms_numbers"
+            android:dependency="read_sms"
+            android:title="@string/numeros_origem_sms"
+            android:defaultValue="@array/empty_array" />
+        
+        <EditTextPreference
+            android:key="sms_credit_identifier"
+            android:dependency="read_sms"
+            android:title="@string/identificao_credito"
+            android:defaultValue="recebida,recebido"/>
+        
+        <EditTextPreference
+            android:key="sms_debit_identifier"
+            android:dependency="read_sms"
+            android:title="@string/identificao_debito"
+            android:defaultValue="saque,compra"/>
+        
+        <EditTextPreference
+            android:key="sms_ignore_identifier"
+            android:dependency="read_sms"
+            android:title="@string/identificao_ignorar"
+            android:defaultValue="negado,negada"/>
+    </PreferenceCategory>
+</PreferenceScreen>

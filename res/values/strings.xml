@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gerenciador de Custos</string>
+    <string name="title_item_detail">Detalhes</string>
+    <string name="sms">SMS</string>
+    <string name="monitorar_sms">Monitorar SMS</string>
+    <string name="numeros_origem_sms">Números de origem do SMS</string>
+    <string name="identificao_credito">Identificador de Crédito</string>
+    <string name="identificao_debito">Identificador de Débito</string>
+    <string name="identificao_ignorar">Identificador para ignorar</string>
+    <string name="refresh">Atualizar</string>
+    <string name="settings">Configurações</string>
+    <string name="clear">Limpar</string>
+    <string name="drop">Apagar</string>
+    <string name="dia">Dia</string>
+    <string name="semana">Semana</string>
+    <string name="mes">Mês</string>
+    <string name="ano">Ano</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="title_activity_control">Cadastro</string>
+    <string name="movimentos">Movimentos</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="credito">Crédito</string>
+    <string name="valor">Valor</string>
+    <string name="salvar">Salvar</string>
+    <string name="deletar">Deletar</string>
+    <string name="hora">Hora</string>
+    <string name="title_activity_main">Gerenciador de custos</string>
+    <string name="title_section1">Section 1</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="estabelecimento">Estabelecimento</string>
+    <string name="produto">Produto</string>
+    <string name="empresa">Empresa</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
+
+</resources>

@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_refresh"
+          android:icon="@android:drawable/ic_popup_sync"
+          android:title="@string/refresh"
+          android:showAsAction="always"/>
+    
+    <item android:id="@+id/action_settings"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:title="@string/settings"
+          android:showAsAction="ifRoom"/>
+    
+    <item android:id="@+id/action_clear"
+          android:icon="@android:drawable/ic_menu_delete"
+          android:title="@string/clear"/>
+    
+    <item android:id="@+id/action_drop"
+          android:icon="@android:drawable/ic_menu_delete"
+          android:title="@string/drop"/>
+</menu>

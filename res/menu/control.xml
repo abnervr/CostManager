@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.abner.manager.ControlActivity" >
+
+    <item
+        android:id="@+id/action_save"
+        android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/salvar"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/deletar"/>
+    
+</menu>
