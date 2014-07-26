@@ -1,4 +1,4 @@
-package org.abner.manager.activities.cadastro.adapter;
+package org.abner.manager.activities.cadastro.movimento;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -53,9 +53,9 @@ public class MovimentoItemAdapter extends ArrayAdapter<MovimentoItem> {
         view = (TextView) convertView.findViewById(R.id.movimento_item_time);
         view.setText(DateFormat.getTimeFormat(getContext()).format(item.getData()));
 
-        view = (TextView) convertView.findViewById(R.id.movimento_item_estabelecimento);
-        if (item.getEstabelecimento() != null) {
-            view.setText(item.getEstabelecimento().getEmpresa().getNome());
+        view = (TextView) convertView.findViewById(R.id.movimento_item_empresa);
+        if (item.getEmpresa() != null) {
+            view.setText(item.getEmpresa().getNome());
         }
         view.setOnClickListener(new OnClickListener() {
 

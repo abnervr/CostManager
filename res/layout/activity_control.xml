@@ -3,5 +3,5 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.abner.manager.activities.cadastro.ControlActivity" />
+    tools:context="org.abner.manager.activities.cadastro.movimento.MovimentoActivity" />
 

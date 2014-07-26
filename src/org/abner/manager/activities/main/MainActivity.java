@@ -3,7 +3,7 @@ package org.abner.manager.activities.main;
 import org.abner.manager.R;
 import org.abner.manager.Settings;
 import org.abner.manager.SmsReadTask;
-import org.abner.manager.activities.cadastro.ControlActivity;
+import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
 import org.abner.manager.activities.main.adapter.GastosAdapter.Grouping;
 import org.abner.manager.activities.settings.SettingsActivity;
 import org.abner.manager.db.DBAdapter;
@@ -129,7 +129,7 @@ public class MainActivity extends Activity
                 updateFragment(Grouping.DIA);
                 return true;
             case R.id.action_adicionar:
-                Intent intent = new Intent(this, ControlActivity.class);
+                Intent intent = new Intent(this, MovimentoActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_refresh:

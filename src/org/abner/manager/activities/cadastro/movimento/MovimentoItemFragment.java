@@ -1,8 +1,7 @@
-package org.abner.manager.activities.cadastro;
+package org.abner.manager.activities.cadastro.movimento;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.cadastro.adapter.MovimentoItemAdapter;
-import org.abner.manager.activities.cadastro.adapter.MovimentoItemAdapter.MovimentoItemOnClickListener;
+import org.abner.manager.activities.cadastro.movimento.MovimentoItemAdapter.MovimentoItemOnClickListener;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.MovimentoItem;
 
@@ -35,7 +34,7 @@ public class MovimentoItemFragment extends ListFragment implements MovimentoItem
     @Override
     public void onClick(MovimentoItem item, View view) {
         switch (view.getId()) {
-            case R.id.movimento_item_estabelecimento:
+            case R.id.movimento_item_empresa:
                 DialogFragment dialog = new EmpresaFragment();
 
                 Bundle args = new Bundle();

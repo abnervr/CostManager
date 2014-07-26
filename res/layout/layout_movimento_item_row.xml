@@ -12,14 +12,14 @@
         android:orientation="horizontal">
 		
         <EditText
-	        android:id="@+id/movimento_item_estabelecimento"
+	        android:id="@+id/movimento_item_empresa"
 			android:layout_height="wrap_content"
 			android:layout_width="0dip"
 			android:layout_weight="1"
 			android:focusable="false"
 			android:clickable="true"
 			android:inputType="none"
-			android:hint="@string/estabelecimento"/>
+			android:hint="@string/empresa"/>
         
 	    <EditText 
 	       	android:id="@+id/movimento_item_valor"

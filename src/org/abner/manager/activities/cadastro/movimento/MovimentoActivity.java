@@ -1,9 +1,10 @@
-package org.abner.manager.activities.cadastro;
+package org.abner.manager.activities.cadastro.movimento;
 
 import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.abner.manager.R;
+import org.abner.manager.activities.cadastro.movimento.adapter.SmsFragment;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.repository.movimento.MovimentoRepository;
@@ -25,7 +26,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ControlActivity extends Activity {
+public class MovimentoActivity extends Activity {
 
     public static final String ARG_MOVIMENTO = "arg_movimento";
 
@@ -110,7 +111,7 @@ public class ControlActivity extends Activity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        MovimentoRepository movimentoRepository = new MovimentoDao(ControlActivity.this);
+                        MovimentoRepository movimentoRepository = new MovimentoDao(MovimentoActivity.this);
                         movimentoRepository.remove(movimento);
                         finish();
                     }

@@ -48,19 +48,25 @@ public class GenericDAO<M extends Model> implements Repository<M> {
     protected List<M> find(String sql, Object... selectionArgs) {
         try {
             db.open();
-            String[] args = null;
-            if (selectionArgs != null) {
-                args = new String[selectionArgs.length];
-                for (int i = 0; i < selectionArgs.length; i++) {
-                    if (selectionArgs[i] != null) {
-                        args[i] = selectionArgs[i].toString();
-                    }
-                }
-            }
+
+            String[] args = buildSelectionArgs(selectionArgs);
             return db.find(model, sql, args);
         } finally {
             db.close();
         }
+    }
+
+    private String[] buildSelectionArgs(Object... selectionArgs) {
+        String[] args = null;
+        if (selectionArgs != null) {
+            args = new String[selectionArgs.length];
+            for (int i = 0; i < selectionArgs.length; i++) {
+                if (selectionArgs[i] != null) {
+                    args[i] = selectionArgs[i].toString();
+                }
+            }
+        }
+        return args;
     }
 
     @Override

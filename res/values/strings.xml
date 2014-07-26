@@ -37,7 +37,8 @@
     <string name="estabelecimento">Estabelecimento</string>
     <string name="produto">Produto</string>
     <string name="empresa">Empresa</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
+    <string name="tipo">Tipo</string>
 
 </resources>

@@ -1,7 +1,7 @@
 package org.abner.manager.activities.main;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.cadastro.ControlActivity;
+import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
 import org.abner.manager.activities.main.adapter.GastosAdapter;
 import org.abner.manager.activities.main.adapter.GastosAdapter.Grouping;
 import org.abner.manager.activities.main.adapter.MovimentoAdapter;
@@ -104,9 +104,9 @@ public class MainFragment extends ListFragment {
                     Movimento movimento = (Movimento) l.getItemAtPosition(position);
 
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(ControlActivity.ARG_MOVIMENTO, movimento);
+                    bundle.putSerializable(MovimentoActivity.ARG_MOVIMENTO, movimento);
 
-                    Intent intent = new Intent(getActivity(), ControlActivity.class);
+                    Intent intent = new Intent(getActivity(), MovimentoActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     break;

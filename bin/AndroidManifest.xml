@@ -31,7 +31,7 @@
         <activity android:name=".activities.settings.SettingsActivity" >
         </activity>
         <activity
-            android:name=".activities.cadastro.ControlActivity"
+            android:name="org.abner.manager.activities.cadastro.movimento.MovimentoActivity"
             android:label="@string/title_activity_control" >
         </activity>
 

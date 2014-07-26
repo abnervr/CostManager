@@ -11,5 +11,11 @@
             android:layout_width="fill_parent"
 	       	android:hint="@string/empresa"
 	       	android:inputType="text"/>
+    
+    <AutoCompleteTextView 
+        	android:id="@+id/empresa_tipo"
+        	android:layout_height="wrap_content"
+        	android:layout_width="fill_parent"
+        	android:hint="@string/tipo"/>
 
 </LinearLayout>

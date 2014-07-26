@@ -1,4 +1,4 @@
-package org.abner.manager.activities.cadastro.adapter;
+package org.abner.manager.activities.cadastro.movimento.adapter;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class EmpresaAdapter extends ArrayAdapter<Empresa> {
 
@@ -20,7 +20,7 @@ public class EmpresaAdapter extends ArrayAdapter<Empresa> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
 
-        ((EditText) view).setText(getItem(position).getNome());
+        ((TextView) view).setText(getItem(position).getNome());
 
         return view;
     }
