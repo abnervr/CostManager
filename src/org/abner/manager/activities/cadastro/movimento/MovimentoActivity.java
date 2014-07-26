@@ -50,7 +50,7 @@ public class MovimentoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_control);
+        setContentView(R.layout.activity_movimento);
 
         Intent intent = getIntent();
         if (intent != null && intent.getSerializableExtra(ARG_MOVIMENTO) != null) {

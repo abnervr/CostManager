@@ -1,18 +1,21 @@
 package org.abner.manager.activities.cadastro.movimento;
 
-import org.abner.manager.R;
-import org.abner.manager.activities.cadastro.movimento.MovimentoItemAdapter.MovimentoItemOnClickListener;
-import org.abner.manager.model.movimento.Movimento;
-import org.abner.manager.model.movimento.MovimentoItem;
+import java.io.Serializable;
 
-import android.app.DialogFragment;
+import org.abner.manager.R;
+import org.abner.manager.activities.cadastro.movimento.adapter.MovimentoItemAdapter;
+import org.abner.manager.activities.cadastro.movimentoitem.MovimentoItemActivity;
+import org.abner.manager.model.movimento.Movimento;
+
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-public class MovimentoItemFragment extends ListFragment implements MovimentoItemOnClickListener {
+public class MovimentoItemFragment extends ListFragment {
 
     private Movimento movimento;
 
@@ -24,25 +27,23 @@ public class MovimentoItemFragment extends ListFragment implements MovimentoItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_movimento_item, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        setListAdapter(new MovimentoItemAdapter(getActivity(), movimento, this));
+        setListAdapter(new MovimentoItemAdapter(getActivity(), movimento));
 
         return rootView;
     }
 
     @Override
-    public void onClick(MovimentoItem item, View view) {
-        switch (view.getId()) {
-            case R.id.movimento_item_empresa:
-                DialogFragment dialog = new EmpresaFragment();
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Bundle extras = new Bundle();
+        extras.putSerializable(MovimentoItemActivity.ARG_MOVIMENTO_ITEM, (Serializable) l.getItemAtPosition(position));
 
-                Bundle args = new Bundle();
-                args.putSerializable("movimentoItem", item);
-                dialog.setArguments(args);
+        Intent intent = new Intent(getActivity(), MovimentoItemActivity.class);
+        intent.putExtras(extras);
+        startActivity(intent);
 
-                dialog.show(getFragmentManager(), "Estabelecimento");
-                break;
-        }
+        super.onListItemClick(l, v, position, id);
     }
+
 }
