@@ -2,7 +2,6 @@ package org.abner.manager.db;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,7 +111,7 @@ public class DBAdapter {
                     throws IllegalAccessException {
         ContentValues initialValues = new ContentValues();
 
-        for (Field field : dbHelper.getFields(model.getClass())) {
+        for (Field field : ModelProperties.getFields(model.getClass())) {
             field.setAccessible(true);
             Object object = field.get(model);
 
@@ -178,7 +177,7 @@ public class DBAdapter {
 
     public <T extends Model> List<T> findFirst(Class<T> model, String where, String[] selectionArgs, String groupBy, String having,
                     String orderBy, String limit) {
-        List<Field> fields = dbHelper.getFields(model);
+        List<Field> fields = ModelProperties.getFields(model);
         String[] columns = new String[fields.size()];
 
         for (int i = 0; i < fields.size(); i++) {
@@ -194,7 +193,7 @@ public class DBAdapter {
         try {
             cursor = db.query(dbHelper.getTableName(model), columns, where,
                             selectionArgs, groupBy, having, orderBy, limit);
-            return iterate(model, fields, cursor, false);
+            return iterate(model, cursor, false);
         } catch (Exception e) {
             Log.d("DBAdapter", e.getStackTrace().toString());
         } finally {
@@ -228,104 +227,27 @@ public class DBAdapter {
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
         try {
-            List<Field> fields = dbHelper.getFields(model, false);
-            return iterate(model, fields, cursor, lazy);
+            return iterate(model, cursor, lazy);
         } finally {
             cursor.close();
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private <M> List<M> iterate(Class<M> model, List<Field> fields,
-                    Cursor cursor, boolean lazy) {
-        List<M> result = new ArrayList<M>();
-        try {
+    private <M> List<M> iterate(Class<M> model, Cursor cursor, boolean lazy) {
+        ModelIterator<M> models;
 
-            if (cursor.moveToFirst()) {
-
-                do {
-                    M instance = model.newInstance();
-
-                    for (int i = 0; i < cursor.getColumnCount()
-                                    && i < fields.size(); i++) {
-                        if (!cursor.isNull(i)) {
-                            String columnName = cursor.getColumnName(i);
-                            Field field = fields.get(i);
-                            if (!columnName.equals(field.getName())
-                                            && !(Model.class.isAssignableFrom(field
-                                                            .getType()) && columnName
-                                                            .equals(field.getName() + "Id"))) {
-                                field = null;
-                                for (Field f : fields) {
-                                    if (f.getName().equals(columnName)
-                                                    || (Model.class.isAssignableFrom(f
-                                                                    .getType()) && columnName
-                                                                    .equals(f.getName() + "Id"))) {
-                                        field = f;
-                                        break;
-                                    }
-                                }
-                                if (field == null) {
-                                    // Não achei o field para o valor que foi
-                                    // consultado
-                                    continue;
-                                }
-                            }
-                            field.setAccessible(true);
-                            Class<?> type = field.getType();
-
-                            if (type.equals(Long.class)
-                                            || type.equals(long.class)) {
-                                field.set(instance, cursor.getLong(i));
-
-                            } else if (type.isEnum()) {
-                                field.set(instance, Enum.valueOf((Class<Enum>) type, cursor.getString(i)));
-
-                            } else if (type.equals(Integer.class)
-                                            || type.equals(int.class)) {
-                                field.set(instance, cursor.getInt(i));
-
-                            } else if (type.equals(Boolean.class)
-                                            || type.equals(boolean.class)) {
-                                field.set(instance,
-                                                cursor.getInt(i) == 1 ? Boolean.TRUE
-                                                                : Boolean.FALSE);
-
-                            } else if (type.equals(String.class)) {
-                                field.set(instance, cursor.getString(i));
-
-                            } else if (type.equals(Date.class)) {
-                                field.set(instance,
-                                                new Date(cursor.getLong(i)));
-
-                            } else if (type.equals(BigDecimal.class)) {
-                                field.set(instance,
-                                                new BigDecimal(cursor.getString(i),
-                                                                new MathContext(6,
-                                                                                RoundingMode.HALF_UP)));
-
-                            } else if (Model.class.isAssignableFrom(type)) {
-                                long id = cursor.getLong(i);
-                                Model parent;
-                                if (lazy) {
-                                    parent = (Model) type.newInstance();
-                                    parent.setId(id);
-                                } else {
-                                    parent = findById((Class<Model>) type, id);
-                                }
-                                field.set(instance, parent);
-                            }
-                        }
-                    }
-                    result.add(instance);
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getSimpleName(),
-                            e.getMessage() != null ? e.getMessage() : "<null>");
-            throw new RuntimeException(e);
+        if (lazy) {
+            models = new ModelIterator<M>(cursor, model, null);
+        } else {
+            models = new ModelIterator<M>(cursor, model, this);
         }
+
+        List<M> result = new ArrayList<M>();
+
+        for (M m : models) {
+            result.add(m);
+        }
+
         return result;
     }
 

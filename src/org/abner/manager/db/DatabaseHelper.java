@@ -1,13 +1,8 @@
 package org.abner.manager.db;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.abner.manager.model.AbstractModel;
 import org.abner.manager.model.Model;
@@ -46,8 +41,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
                     Classe.class, Produto.class,
 
                     Sms.class};
-
-    private final Map<Class<?>, List<Field>> fields = new HashMap<Class<?>, List<Field>>();
 
     DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -105,7 +98,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         builder.append("(");
         boolean hasData = false;
 
-        for (Field field : getFields(model)) {
+        for (Field field : ModelProperties.getFields(model)) {
             String type = null;
             String suffix = null;
 
@@ -189,44 +182,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return name;
-    }
-
-    /**
-     *  Todos os Fields que forem encontrados na hierarquia da classe.<br>
-     *  Fields com o modificador <code>transient</code> e  <code>static</code> são ignorados.
-     *  
-     * @param model
-     * @return fields que serão persistidos
-     */
-    public List<Field> getFields(Class<? extends Model> model) {
-        return getFields(model, true);
-    }
-
-    public List<Field> getFields(Class<?> model, boolean ignoreTransient) {
-
-        if (Long.class.isAssignableFrom(model)) {
-            return null;
-        } else if (fields.containsKey(model)) {
-            return fields.get(model);
-        }
-
-        List<Field> fields = new ArrayList<Field>();
-        Class<?> clazz = model;
-
-        while (clazz != null) {
-
-            for (Field field : clazz.getDeclaredFields()) {
-
-                if ((!ignoreTransient || (field.getModifiers() & Modifier.TRANSIENT) == 0) && (field.getModifiers() & Modifier.STATIC) == 0) {
-                    fields.add(field);
-                }
-            }
-
-            clazz = clazz.getSuperclass();
-        }
-
-        this.fields.put(model, fields);
-        return fields;
     }
 
 }
