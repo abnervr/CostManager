@@ -40,5 +40,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="tipo">Tipo</string>
+    <string name="data">Data</string>
 
 </resources>

@@ -9,7 +9,6 @@ import org.abner.manager.model.movimento.MovimentoItem;
 import org.abner.manager.repository.movimento.dao.MovimentoItemDao;
 
 import android.app.Activity;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +39,6 @@ public class MovimentoItemAdapter extends ArrayAdapter<MovimentoItem> {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         TextView view = (TextView) convertView.findViewById(R.id.movimento_item_valor);
         view.setText(format.format(item.getValor()));
-
-        view = (TextView) convertView.findViewById(R.id.movimento_item_date_time);
-        view.setText(DateFormat.getDateFormat(getContext()).format(item.getData()));
-        view.setText(view.getText() + " ");
-        view.setText(view.getText() + DateFormat.getTimeFormat(getContext()).format(item.getData()));
-
-        view = (TextView) convertView.findViewById(R.id.movimento_item_empresa);
-        if (item.getEmpresa() != null) {
-            view.setText(item.getEmpresa().getNome());
-        }
 
         view = (TextView) convertView.findViewById(R.id.movimento_item_produto);
         if (item.getProduto() != null) {

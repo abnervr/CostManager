@@ -29,26 +29,35 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
         LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.layout_row, parent, false);
+            convertView = inflater.inflate(R.layout.layout_movimento_row, parent, false);
         }
 
         Movimento movimento = getItem(position);
 
-        TextView tv = (TextView) convertView.findViewById(R.id.name);
-        TextView subname = (TextView) convertView.findViewById(R.id.subname);
-        String name = DateFormat.getDateFormat(context).format(movimento.getData());
-        name += " ";
-        name += DateFormat.getTimeFormat(context).format(movimento.getData());
+        TextView view = (TextView) convertView.findViewById(R.id.movimento_data);
+        view.setText(getDateFormatted(movimento));
 
-        tv.setText(name);
+        if (movimento.getEmpresa() != null) {
+            view = (TextView) convertView.findViewById(R.id.movimento_empresa);
+            view.setText(movimento.getEmpresa().getNome());
+        }
+
+        view = (TextView) convertView.findViewById(R.id.movimento_valor);
         NumberFormat format = NumberFormat.getCurrencyInstance();
         if (movimento.getValor() != null) {
             if (movimento.getTipo() == TipoMovimento.CREDITO) {
-                subname.setText(format.format(movimento.getValor()));
+                view.setText(format.format(movimento.getValor()));
             } else {
-                subname.setText(format.format(movimento.getValor().negate()));
+                view.setText(format.format(movimento.getValor().negate()));
             }
         }
         return convertView;
+    }
+
+    private String getDateFormatted(Movimento movimento) {
+        String name = DateFormat.getDateFormat(context).format(movimento.getData());
+        name += " ";
+        name += DateFormat.getTimeFormat(context).format(movimento.getData());
+        return name;
     }
 }

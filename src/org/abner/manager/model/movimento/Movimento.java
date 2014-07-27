@@ -4,12 +4,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.abner.manager.model.AbstractModel;
+import org.abner.manager.model.empresa.Empresa;
+import org.abner.manager.model.empresa.Estabelecimento;
 
 public class Movimento extends AbstractModel {
 
     private TipoMovimento tipo;
 
     private Date data;
+
+    private Empresa empresa;
+
+    private Estabelecimento estabelecimento;
+
+    private Movimento movimentoPai;
 
     private BigDecimal valor;
 
@@ -37,4 +45,27 @@ public class Movimento extends AbstractModel {
         this.valor = valor;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Estabelecimento getEstabelecimento() {
+        return estabelecimento;
+    }
+
+    public void setEstabelecimento(Estabelecimento estabelecimento) {
+        this.estabelecimento = estabelecimento;
+    }
+
+    public Movimento getMovimentoPai() {
+        return movimentoPai;
+    }
+
+    public void setMovimentoPai(Movimento movimentoPai) {
+        this.movimentoPai = movimentoPai;
+    }
 }

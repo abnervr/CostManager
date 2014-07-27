@@ -172,10 +172,10 @@ public class DBAdapter {
     }
 
     public <T extends Model> List<T> find(Class<T> model, String where) {
-        return findFirst(model, where, null, null, null, null, null);
+        return find(model, where, null, null, null, null, null);
     }
 
-    public <T extends Model> List<T> findFirst(Class<T> model, String where, String[] selectionArgs, String groupBy, String having,
+    public <T extends Model> List<T> find(Class<T> model, String where, String[] selectionArgs, String groupBy, String having,
                     String orderBy, String limit) {
         List<Field> fields = ModelProperties.getFields(model);
         String[] columns = new String[fields.size()];
@@ -222,8 +222,7 @@ public class DBAdapter {
         return db.rawQuery(sql, selectionArgs);
     }
 
-    public <M> List<M> find(Class<M> model, String sql, String[] selectionArgs,
-                    boolean lazy) {
+    public <M> List<M> find(Class<M> model, String sql, String[] selectionArgs, boolean lazy) {
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
         try {

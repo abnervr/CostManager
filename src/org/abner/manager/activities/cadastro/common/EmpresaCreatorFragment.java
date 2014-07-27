@@ -32,6 +32,8 @@ public class EmpresaCreatorFragment extends DialogFragment {
 
     private OnEmpresaCreatedListener listener;
 
+    private Empresa empresa;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +50,8 @@ public class EmpresaCreatorFragment extends DialogFragment {
 
         final AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.empresa_tipo);
 
-        List<Tipo> tipos = new TipoDAO(getActivity()).find();
-
-        String[] objects = new String[tipos.size()];
-        for (int i = 0; i < tipos.size(); i++) {
-            Tipo tipo = tipos.get(i);
-            objects[i] = tipo.getDescricao();
-        }
         ArrayAdapter<String> adapter =
-                        new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, objects);
+                        new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getTipos());
         textView.setAdapter(adapter);
 
         builder.setView(view)
@@ -72,12 +67,11 @@ public class EmpresaCreatorFragment extends DialogFragment {
                                 if (!nome.trim().isEmpty()) {
                                     Tipo tipo = getTipo(textView);
 
-                                    Empresa empresa = new Empresa();
+                                    empresa = new Empresa();
                                     empresa.setNome(nome);
                                     empresa.setTipo(tipo);
                                     new EmpresaDAO(getActivity()).insert(empresa);
 
-                                    listener.onEmpresaCreated(empresa);
                                     dismiss();
                                 } else {
                                     Toast.makeText(getActivity(), "Nome inválido", Toast.LENGTH_LONG).show();
@@ -86,6 +80,23 @@ public class EmpresaCreatorFragment extends DialogFragment {
                         });
 
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        listener.onEmpresaCreated(empresa);
+    }
+
+    private String[] getTipos() {
+        List<Tipo> tipos = new TipoDAO(getActivity()).find();
+
+        String[] objects = new String[tipos.size()];
+        for (int i = 0; i < tipos.size(); i++) {
+            Tipo tipo = tipos.get(i);
+            objects[i] = tipo.getDescricao();
+        }
+        return objects;
     }
 
     private Tipo getTipo(final AutoCompleteTextView textView) {

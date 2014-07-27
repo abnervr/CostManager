@@ -73,8 +73,7 @@ public class MovimentoItemActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 if (movimentoItem.getId() == null) {
-                    if (movimentoItem.getData() != null
-                                    && movimentoItem.getValor() != null) {
+                    if (movimentoItem.getValor() != null) {
                         MovimentoItemRepository itemRepository = new MovimentoItemDao(this);
                         itemRepository.insert(movimentoItem);
                         finish();

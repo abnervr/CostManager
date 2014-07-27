@@ -26,36 +26,42 @@
 	       	android:inputType="numberDecimal"/>
     </LinearLayout>
     
-    <TextView 
+    <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:text="@string/dia"/>
+	    android:layout_margin="10dp"
+        android:orientation="horizontal">
+    
+	    <EditText
+	        android:id="@+id/movimento_data"
+			android:layout_height="wrap_content"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:focusable="false"
+			android:clickable="true"
+			android:layout_gravity="center"
+			android:hint="@string/dia"
+			android:inputType="date"/>
+	
+	    <EditText
+	        android:id="@+id/movimento_time"
+			android:layout_height="wrap_content"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:focusable="false"
+			android:clickable="true"
+			android:layout_gravity="center"
+			android:hint="@string/hora"
+			android:inputType="time"/>
+    </LinearLayout>
     
     <EditText
-        android:id="@+id/movimento_data"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:focusable="false"
-		android:clickable="true"
-		android:layout_gravity="center"
-		android:layout_margin="10dp"
-		android:inputType="date"/>
-
-    <TextView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:text="@string/hora"/>
-    
-    <EditText
-        android:id="@+id/movimento_time"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:focusable="false"
-		android:clickable="true"
-		android:layout_gravity="center"
-		android:layout_margin="10dp"
-		android:inputType="time"/>
+	        android:id="@+id/movimento_empresa"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:focusable="false"
+			android:clickable="true"
+			android:inputType="none"
+			android:hint="@string/empresa"/>
     
 </LinearLayout>
