@@ -17,6 +17,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -115,16 +116,19 @@ public class MovimentoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    
+
         if (requestCode == CHANGE_EMPRESA) {
             movimento = new MovimentoDao(getActivity()).find(movimento.getId());
-    
+
             TextView view = (TextView) getActivity().findViewById(R.id.movimento_empresa);
             if (movimento.getEmpresa() != null) {
                 view.setText(movimento.getEmpresa().getNome());
+                Log.i("MovimentoFragment", "update " + movimento.getEmpresa().getNome());
+            } else {
+                Log.i("MovimentoFragment", "update empresa");
             }
         }
-    
+
     }
 
     public class DatePickerFragment extends DialogFragment

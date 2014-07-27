@@ -89,8 +89,7 @@ public class MovimentoActivity extends Activity {
                 updateMovimentoFromUI();
 
                 if (movimento.getId() == null) {
-                    if (movimento.getData() != null
-                                    && movimento.getValor() != null) {
+                    if (movimento.getData() != null && movimento.getValor() != null) {
                         MovimentoRepository movimentoRepository = new MovimentoDao(this);
                         movimentoRepository.insert(movimento);
                         finish();

@@ -37,9 +37,11 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
         TextView view = (TextView) convertView.findViewById(R.id.movimento_data);
         view.setText(getDateFormatted(movimento));
 
+        view = (TextView) convertView.findViewById(R.id.movimento_empresa);
         if (movimento.getEmpresa() != null) {
-            view = (TextView) convertView.findViewById(R.id.movimento_empresa);
             view.setText(movimento.getEmpresa().getNome());
+        } else {
+            view.setText(null);
         }
 
         view = (TextView) convertView.findViewById(R.id.movimento_valor);
@@ -50,6 +52,8 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
             } else {
                 view.setText(format.format(movimento.getValor().negate()));
             }
+        } else {
+            view.setText(null);
         }
         return convertView;
     }
