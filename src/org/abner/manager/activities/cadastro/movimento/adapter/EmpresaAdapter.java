@@ -20,7 +20,10 @@ public class EmpresaAdapter extends ArrayAdapter<Empresa> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
 
-        ((TextView) view).setText(getItem(position).getNome());
+        Empresa item = getItem(position);
+
+        TextView textView = (TextView) view;
+        textView.setText(item.getNome());
 
         return view;
     }

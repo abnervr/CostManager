@@ -1,0 +1,84 @@
+package org.abner.manager.activities.cadastro.common;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.abner.manager.activities.cadastro.common.EmpresaCreatorFragment.OnEmpresaCreatedListener;
+import org.abner.manager.activities.cadastro.movimento.adapter.EmpresaAdapter;
+import org.abner.manager.model.empresa.Empresa;
+import org.abner.manager.model.movimento.MovimentoItem;
+import org.abner.manager.repository.empresa.dao.EmpresaDAO;
+import org.abner.manager.repository.movimento.dao.MovimentoItemDao;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.os.Bundle;
+import android.util.Log;
+
+@SuppressWarnings("serial")
+public class EmpresaFragment extends DialogFragment implements OnEmpresaCreatedListener, Serializable {
+
+    private MovimentoItem item;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            item = (MovimentoItem) getArguments().getSerializable("movimentoItem");
+        }
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final List<Empresa> empresas = new EmpresaDAO(getActivity()).find();
+        if (!empresas.isEmpty()) {
+            int checkedItem = -1;
+            if (item.getEmpresa() != null) {
+                checkedItem = empresas.indexOf(item.getEmpresa());
+            }
+            builder.setSingleChoiceItems(new EmpresaAdapter(getActivity(), empresas), checkedItem, new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.i("On empresa selected", String.valueOf(which));
+
+                    Empresa empresa = empresas.get(which);
+
+                    onEmpresaCreated(empresa);
+
+                    dialog.dismiss();
+                }
+
+            });
+            builder.setNeutralButton("Novo Item", new OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DialogFragment d = new EmpresaCreatorFragment();
+
+                    Bundle args = new Bundle();
+                    args.putSerializable(EmpresaCreatorFragment.ARG_LISTENER, EmpresaFragment.this);
+                    d.setArguments(args);
+
+                    d.show(getFragmentManager(), "NewEmpresa");
+                }
+            });
+        }
+        return builder.create();
+    }
+
+    @Override
+    public void onEmpresaCreated(Empresa empresa) {
+        item.setEmpresa(empresa);
+        new MovimentoItemDao(getActivity()).update(item);
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
+    }
+
+}

@@ -46,4 +46,11 @@ public class MovimentoItemFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((MovimentoItemAdapter) getListAdapter()).updateItems();
+    }
+
 }

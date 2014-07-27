@@ -19,12 +19,14 @@ import android.widget.TextView;
 public class MovimentoItemAdapter extends ArrayAdapter<MovimentoItem> {
 
     private final LayoutInflater inflater;
+    private final Movimento movimento;
 
     public MovimentoItemAdapter(Activity activity, Movimento movimento) {
         super(activity, android.R.id.list, new ArrayList<MovimentoItem>());
         this.inflater = activity.getLayoutInflater();
+        this.movimento = movimento;
 
-        addAll(new MovimentoItemDao(activity).findByMovimento(movimento));
+        updateItems();
     }
 
     @Override
@@ -55,5 +57,10 @@ public class MovimentoItemAdapter extends ArrayAdapter<MovimentoItem> {
         }
 
         return convertView;
+    }
+
+    public void updateItems() {
+        clear();
+        addAll(new MovimentoItemDao(getContext()).findByMovimento(movimento));
     }
 }
