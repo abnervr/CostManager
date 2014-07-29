@@ -2,9 +2,12 @@ package org.abner.manager.db.model.reader;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.abner.manager.db.DBAdapter;
+import org.abner.manager.db.ModelProperties;
 import org.abner.manager.model.Model;
 
 import android.database.Cursor;
@@ -14,7 +17,17 @@ public abstract class FieldReader {
 
     private final Field field;
 
-    public static FieldReader getReader(Field field, DBAdapter db) {
+    public static List<FieldReader> getReaders(Class<?> model, DBAdapter db) {
+        List<FieldReader> readers = new ArrayList<FieldReader>();
+
+        for (Field field : ModelProperties.getFields(model)) {
+            readers.add(FieldReader.getReader(field, db));
+        }
+
+        return readers;
+    }
+
+    private static FieldReader getReader(Field field, DBAdapter db) {
         Class<?> type = field.getType();
 
         if (type.equals(Long.class) || type.equals(long.class)) {
@@ -55,7 +68,7 @@ public abstract class FieldReader {
         return field.getType();
     }
 
-    public void readAndSet(Object instance, Cursor cursor, int columnIndex) {
+    public void readCursorAndSetValue(Object instance, Cursor cursor, int columnIndex) {
         try {
             field.set(instance, read(cursor, columnIndex));
         } catch (Exception e) {

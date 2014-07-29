@@ -1,11 +1,9 @@
 package org.abner.manager.db.model;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.abner.manager.db.DBAdapter;
-import org.abner.manager.db.ModelProperties;
 import org.abner.manager.db.model.reader.FieldReader;
 
 import android.database.Cursor;
@@ -18,9 +16,7 @@ public class ModelBuilder<T> {
 
     public ModelBuilder(Class<T> model, DBAdapter db) {
         this.model = model;
-        for (Field field : ModelProperties.getFields(model)) {
-            this.fields.add(FieldReader.getReader(field, db));
-        }
+        this.fields.addAll(FieldReader.getReaders(model, db));
     }
 
     public T build(Cursor cursor) {
@@ -32,11 +28,11 @@ public class ModelBuilder<T> {
             return null;
         }
 
-        for (int columnIndex = 0; columnIndex < cursor.getColumnCount() && columnIndex < fields.size(); columnIndex++) {
+        for (int columnIndex = 0; columnIndex < cursor.getColumnCount(); columnIndex++) {
             if (!cursor.isNull(columnIndex)) {
-                FieldReader field = getFieldReader(cursor.getColumnName(columnIndex));
-                if (field != null) {
-                    field.readAndSet(instance, cursor, columnIndex);
+                FieldReader fieldReader = getFieldReader(cursor.getColumnName(columnIndex));
+                if (fieldReader != null) {
+                    fieldReader.readCursorAndSetValue(instance, cursor, columnIndex);
                 }
             }
         }
