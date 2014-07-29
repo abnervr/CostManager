@@ -6,22 +6,27 @@ import java.util.List;
 import org.abner.manager.R;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
+import org.abner.manager.repository.movimento.dao.MovimentoDao;
 
 import android.app.Activity;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class MovimentoAdapter extends ArrayAdapter<Movimento> {
+public class MovimentoAdapter extends MainAdapter<Movimento> {
 
     private final Activity context;
 
-    public MovimentoAdapter(Activity context, List<Movimento> movimentos) {
-        super(context, android.R.id.list, movimentos);
+    public MovimentoAdapter(Activity context) {
+        super(context);
         this.context = context;
+    }
+
+    @Override
+    protected List<Movimento> getItems() {
+        return new MovimentoDao(context).find();
     }
 
     @Override
@@ -59,7 +64,9 @@ public class MovimentoAdapter extends ArrayAdapter<Movimento> {
     }
 
     private String getDateFormatted(Movimento movimento) {
-        String name = DateFormat.getDateFormat(context).format(movimento.getData());
+        String name = DateFormat.format("E", movimento.getData()).toString();
+        name += ", ";
+        name += DateFormat.getDateFormat(context).format(movimento.getData());
         name += " ";
         name += DateFormat.getTimeFormat(context).format(movimento.getData());
         return name;

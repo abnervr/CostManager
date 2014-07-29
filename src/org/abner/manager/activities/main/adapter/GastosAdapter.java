@@ -2,8 +2,8 @@ package org.abner.manager.activities.main.adapter;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import org.abner.manager.R;
@@ -16,10 +16,9 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class GastosAdapter extends ArrayAdapter<Gasto> {
+public class GastosAdapter extends MainAdapter<Gasto> {
 
     public static class Gasto {
 
@@ -79,11 +78,16 @@ public class GastosAdapter extends ArrayAdapter<Gasto> {
     }
 
     private final Activity context;
+    private final Grouping groupBy;
 
     public GastosAdapter(Activity context, Grouping groupBy) {
-        super(context, android.R.id.list, new ArrayList<Gasto>());
+        super(context);
         this.context = context;
+        this.groupBy = groupBy;
+    }
 
+    @Override
+    protected List<Gasto> getItems() {
         DBAdapter db = new DBAdapter(context);
         db.open();
         try {
@@ -129,6 +133,7 @@ public class GastosAdapter extends ArrayAdapter<Gasto> {
         } finally {
             db.close();
         }
+        return null;
     }
 
     @Override

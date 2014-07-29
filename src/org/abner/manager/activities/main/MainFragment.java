@@ -4,13 +4,10 @@ import org.abner.manager.R;
 import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
 import org.abner.manager.activities.main.adapter.GastosAdapter;
 import org.abner.manager.activities.main.adapter.GastosAdapter.Grouping;
+import org.abner.manager.activities.main.adapter.MainAdapter;
 import org.abner.manager.activities.main.adapter.MovimentoAdapter;
 import org.abner.manager.activities.main.adapter.SmsAdapter;
 import org.abner.manager.model.movimento.Movimento;
-import org.abner.manager.repository.movimento.MovimentoRepository;
-import org.abner.manager.repository.movimento.dao.MovimentoDao;
-import org.abner.manager.repository.sms.SmsRepository;
-import org.abner.manager.repository.sms.dao.SmsDao;
 
 import android.app.ListFragment;
 import android.content.Intent;
@@ -34,9 +31,6 @@ public class MainFragment extends ListFragment {
 
     public static final String GROUPING_ID = "grouping_id";
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
     private Program program;
 
     private Grouping grouping;
@@ -52,15 +46,9 @@ public class MainFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
             program = Program.valueOf(getArguments().getString(ARG_ITEM_ID));
         }
         if (getArguments().containsKey(GROUPING_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
             grouping = Grouping.valueOf(getArguments().getString(GROUPING_ID));
         }
     }
@@ -71,13 +59,11 @@ public class MainFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_main,
                         container, false);
 
-        // Show the dummy content as text in a TextView.
         if (program != null) {
             getActivity().getActionBar().setTitle(program.getTitle());
             switch (program) {
                 case CADASTRO:
-                    MovimentoRepository movimentoRepository = new MovimentoDao(getActivity());
-                    setListAdapter(new MovimentoAdapter(getActivity(), movimentoRepository.find()));
+                    setListAdapter(new MovimentoAdapter(getActivity()));
                     break;
                 case GASTOS:
                     setListAdapter(new GastosAdapter(getActivity(), grouping));
@@ -85,8 +71,7 @@ public class MainFragment extends ListFragment {
                 case RELATORIOS:
                     break;
                 case SMS:
-                    SmsRepository smsRepository = new SmsDao(getActivity());
-                    setListAdapter(new SmsAdapter(getActivity(), smsRepository.find()));
+                    setListAdapter(new SmsAdapter(getActivity()));
                     break;
                 default:
                     break;
@@ -125,13 +110,11 @@ public class MainFragment extends ListFragment {
         if (program != null) {
             switch (program) {
                 case CADASTRO:
-                    MovimentoRepository movimentoRepository = new MovimentoDao(getActivity());
-                    ((MovimentoAdapter) getListAdapter()).clear();
-                    ((MovimentoAdapter) getListAdapter()).addAll(movimentoRepository.find());
-                    break;
                 case GASTOS:
-                case RELATORIOS:
                 case SMS:
+                    ((MainAdapter<?>) getListAdapter()).update();
+                    break;
+                case RELATORIOS:
                 default:
                     break;
             }
