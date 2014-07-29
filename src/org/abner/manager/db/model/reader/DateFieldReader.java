@@ -5,7 +5,7 @@ import java.util.Date;
 
 import android.database.Cursor;
 
-public class DateFieldReader extends FieldReader<Long> {
+public class DateFieldReader extends FieldReader {
 
     public DateFieldReader(Field field) {
         super(field);

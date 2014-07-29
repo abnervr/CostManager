@@ -10,11 +10,11 @@ import org.abner.manager.model.Model;
 import android.database.Cursor;
 import android.util.Log;
 
-public abstract class FieldReader<T> {
+public abstract class FieldReader {
 
     private final Field field;
 
-    public static FieldReader<?> getReader(Field field, DBAdapter db) {
+    public static FieldReader getReader(Field field, DBAdapter db) {
         Class<?> type = field.getType();
 
         if (type.equals(Long.class) || type.equals(long.class)) {

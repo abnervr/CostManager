@@ -7,7 +7,7 @@ import org.abner.manager.model.Model;
 
 import android.database.Cursor;
 
-public class ModelFieldReader extends FieldReader<Long> {
+public class ModelFieldReader extends AbstractModelFieldReader {
 
     private final DBAdapter db;
 

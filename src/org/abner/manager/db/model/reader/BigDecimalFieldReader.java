@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 
 import android.database.Cursor;
 
-public class BigDecimalFieldReader extends FieldReader<Long> {
+public class BigDecimalFieldReader extends FieldReader {
 
     public BigDecimalFieldReader(Field field) {
         super(field);

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import android.database.Cursor;
 
-public class LongFieldReader extends FieldReader<Long> {
+public class LongFieldReader extends FieldReader {
 
     public LongFieldReader(Field field) {
         super(field);

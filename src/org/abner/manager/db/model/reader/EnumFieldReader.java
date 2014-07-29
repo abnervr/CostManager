@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import android.database.Cursor;
 
-public class EnumFieldReader extends FieldReader<Enum<?>> {
+public class EnumFieldReader extends FieldReader {
 
     public EnumFieldReader(Field field) {
         super(field);

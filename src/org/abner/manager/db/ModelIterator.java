@@ -15,7 +15,7 @@ public class ModelIterator<T> implements Iterable<T>, Iterator<T> {
 
     public ModelIterator(Cursor cursor, Class<T> model, DBAdapter db) {
         this.cursor = cursor;
-        this.builder = new ModelBuilder<T>(model, ModelProperties.getFields(model), db);
+        this.builder = new ModelBuilder<T>(model, db);
 
         this.first = true;
     }

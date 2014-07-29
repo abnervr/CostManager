@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.abner.manager.db.DBAdapter;
+import org.abner.manager.db.ModelProperties;
 import org.abner.manager.db.model.reader.FieldReader;
-import org.abner.manager.model.Model;
 
 import android.database.Cursor;
 import android.util.Log;
@@ -14,11 +14,11 @@ import android.util.Log;
 public class ModelBuilder<T> {
 
     private final Class<T> model;
-    private final List<FieldReader<?>> fields = new ArrayList<FieldReader<?>>();
+    private final List<FieldReader> fields = new ArrayList<FieldReader>();
 
-    public ModelBuilder(Class<T> model, List<Field> fields, DBAdapter db) {
+    public ModelBuilder(Class<T> model, DBAdapter db) {
         this.model = model;
-        for (Field field : fields) {
+        for (Field field : ModelProperties.getFields(model)) {
             this.fields.add(FieldReader.getReader(field, db));
         }
     }
@@ -32,31 +32,24 @@ public class ModelBuilder<T> {
             return null;
         }
 
-        for (int i = 0; i < cursor.getColumnCount() && i < fields.size(); i++) {
-            if (!cursor.isNull(i)) {
-                FieldReader<?> field = getFieldReader(i, cursor.getColumnName(i));
+        for (int columnIndex = 0; columnIndex < cursor.getColumnCount() && columnIndex < fields.size(); columnIndex++) {
+            if (!cursor.isNull(columnIndex)) {
+                FieldReader field = getFieldReader(cursor.getColumnName(columnIndex));
                 if (field != null) {
-                    field.readAndSet(instance, cursor, i);
+                    field.readAndSet(instance, cursor, columnIndex);
                 }
             }
         }
         return instance;
     }
 
-    private FieldReader<?> getFieldReader(int i, String columnName) {
-        FieldReader<?> field = fields.get(i);
-        if (!columnName.equals(field.getName())
-                        && !(Model.class.isAssignableFrom(field.getType())
-                        && columnName.equals(field.getName() + "Id"))) {
-            field = null;
-            for (FieldReader<?> f : fields) {
-                if (f.getName().equals(columnName)
-                                || (Model.class.isAssignableFrom(f.getType())
-                                && columnName.equals(f.getName() + "Id"))) {
-                    return f;
-                }
+    private FieldReader getFieldReader(String columnName) {
+        for (FieldReader f : fields) {
+            if (f.getName().equals(columnName)) {
+                return f;
             }
         }
-        return field;
+
+        return null;
     }
 }

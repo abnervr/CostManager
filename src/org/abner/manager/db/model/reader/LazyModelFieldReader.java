@@ -7,7 +7,7 @@ import org.abner.manager.model.Model;
 import android.database.Cursor;
 import android.util.Log;
 
-public class LazyModelFieldReader extends FieldReader<Long> {
+public class LazyModelFieldReader extends AbstractModelFieldReader {
 
     public LazyModelFieldReader(Field field) {
         super(field);

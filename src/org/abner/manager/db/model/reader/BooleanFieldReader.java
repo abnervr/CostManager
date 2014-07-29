@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import android.database.Cursor;
 
-public class BooleanFieldReader extends FieldReader<Long> {
+public class BooleanFieldReader extends FieldReader {
 
     public BooleanFieldReader(Field field) {
         super(field);
