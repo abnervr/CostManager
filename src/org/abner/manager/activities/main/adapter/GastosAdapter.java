@@ -77,20 +77,57 @@ public class GastosAdapter extends MainAdapter<Gasto> {
         }
     }
 
-    private final Activity context;
+    private final LayoutInflater inflater;
     private final Grouping groupBy;
 
     public GastosAdapter(Activity context, Grouping groupBy) {
         super(context);
-        this.context = context;
+        this.inflater = context.getLayoutInflater();
         this.groupBy = groupBy;
     }
 
     @Override
     protected List<Gasto> getItems() {
-        DBAdapter db = new DBAdapter(context);
-        db.open();
+        List<Gasto> gastos = findGastos();
+        for (Gasto gasto : gastos) {
+            switch (groupBy) {
+                case DIA:
+                    String[] parts = gasto.getPeriodo().split("\\s");
+                    if (parts.length == 3) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+                        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+                        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
+
+                        gasto.setPeriodo(DateFormat.getDateFormat(getContext()).format(cal.getTime()));
+                    }
+                    break;
+                case SEMANA:
+                    break;
+                case MES:
+                    Calendar cal = Calendar.getInstance();
+                    parts = gasto.getPeriodo().split("\\s");
+                    if (parts.length == 2) {
+                        cal.set(Calendar.YEAR, Integer.parseInt(parts[0]));
+                        cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
+
+                        String formatMonth = DateFormat.format("MMMM - yyyy", cal).toString();
+                        formatMonth = formatMonth.substring(0, 1).toUpperCase(Locale.US) + formatMonth.substring(1);
+                        gasto.setPeriodo(formatMonth);
+                    }
+                    break;
+                case ANO:
+                    break;
+            }
+        }
+        return gastos;
+    }
+
+    private List<Gasto> findGastos() {
+        DBAdapter db = new DBAdapter(getContext());
         try {
+            db.open();
+
             String query = "select " +
                             " strftime('" + groupBy.getFormat() + "', datetime(data/1000, 'unixepoch')) as periodo, " +
                             " sum(case when tipo = '" + TipoMovimento.CREDITO.toString() + "' then valor else 0 end) as credito, " +
@@ -98,48 +135,15 @@ public class GastosAdapter extends MainAdapter<Gasto> {
                             "from Movimento " +
                             "group by strftime('" + groupBy.getFormat() + "', datetime(data/1000, 'unixepoch')) " +
                             "order by 1 desc";
-            for (Gasto gasto : db.find(Gasto.class, query, null)) {
-                switch (groupBy) {
-                    case DIA:
-                        String[] parts = gasto.getPeriodo().split("\\s");
-                        if (parts.length == 3) {
-                            Calendar cal = Calendar.getInstance();
-                            cal.set(Calendar.YEAR, Integer.parseInt(parts[0]));
-                            cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
-                            cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
-
-                            gasto.setPeriodo(DateFormat.getDateFormat(context).format(cal.getTime()));
-                        }
-                        break;
-                    case SEMANA:
-                        break;
-                    case MES:
-                        Calendar cal = Calendar.getInstance();
-                        parts = gasto.getPeriodo().split("\\s");
-                        if (parts.length == 2) {
-                            cal.set(Calendar.YEAR, Integer.parseInt(parts[0]));
-                            cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
-
-                            String formatMonth = DateFormat.format("MMMM - yyyy", cal).toString();
-                            formatMonth = formatMonth.substring(0, 1).toUpperCase(Locale.US) + formatMonth.substring(1);
-                            gasto.setPeriodo(formatMonth);
-                        }
-                        break;
-                    case ANO:
-                        break;
-                }
-                add(gasto);
-            }
+            return db.find(Gasto.class, query, null);
         } finally {
             db.close();
         }
-        return null;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = context.getLayoutInflater();
             convertView = inflater.inflate(R.layout.layout_gastos_row, parent, false);
         }
 

@@ -18,22 +18,20 @@ import android.widget.TextView;
 
 public class SmsAdapter extends MainAdapter<Sms> {
 
-    private final Activity context;
+    private final LayoutInflater inflater;
 
     public SmsAdapter(Activity context) {
         super(context);
-        this.context = context;
+        this.inflater = context.getLayoutInflater();
     }
 
     @Override
     protected List<Sms> getItems() {
-        return new SmsDao(context).find();
+        return new SmsDao(getContext()).find();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.layout_row, parent, false);
         }
@@ -54,9 +52,9 @@ public class SmsAdapter extends MainAdapter<Sms> {
             text += formatedValue + " ";
 
         }
-        text += DateFormat.getDateFormat(context).format(sms.getDateSent());
+        text += DateFormat.getDateFormat(getContext()).format(sms.getDateSent());
         text += " ";
-        text += DateFormat.getTimeFormat(context).format(sms.getDateSent());
+        text += DateFormat.getTimeFormat(getContext()).format(sms.getDateSent());
 
         TextView tv = (TextView) convertView.findViewById(R.id.name);
         tv.setText(text);

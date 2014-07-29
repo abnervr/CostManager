@@ -17,21 +17,20 @@ import android.widget.TextView;
 
 public class MovimentoAdapter extends MainAdapter<Movimento> {
 
-    private final Activity context;
+    private final LayoutInflater inflater;
 
     public MovimentoAdapter(Activity context) {
         super(context);
-        this.context = context;
+        inflater = context.getLayoutInflater();
     }
 
     @Override
     protected List<Movimento> getItems() {
-        return new MovimentoDao(context).find();
+        return new MovimentoDao(getContext()).find();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.layout_movimento_row, parent, false);
@@ -66,9 +65,9 @@ public class MovimentoAdapter extends MainAdapter<Movimento> {
     private String getDateFormatted(Movimento movimento) {
         String name = DateFormat.format("E", movimento.getData()).toString();
         name += ", ";
-        name += DateFormat.getDateFormat(context).format(movimento.getData());
+        name += DateFormat.getDateFormat(getContext()).format(movimento.getData());
         name += " ";
-        name += DateFormat.getTimeFormat(context).format(movimento.getData());
+        name += DateFormat.getTimeFormat(getContext()).format(movimento.getData());
         return name;
     }
 }
