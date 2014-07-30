@@ -7,11 +7,11 @@ import org.abner.manager.model.Model;
 
 import android.database.Cursor;
 
-public class ModelFieldReader extends AbstractModelFieldReader {
+public class ModelColumn extends AbstractModelColumn {
 
     private final DBAdapter db;
 
-    public ModelFieldReader(DBAdapter db, Field field) {
+    public ModelColumn(DBAdapter db, Field field) {
         super(field);
         this.db = db;
     }

@@ -1,21 +1,21 @@
-package org.abner.manager.db;
+package org.abner.manager.db.model;
 
 import java.util.Iterator;
 
-import org.abner.manager.db.model.ModelBuilder;
+import org.abner.manager.db.DBAdapter;
 
 import android.database.Cursor;
 
 public class ModelIterator<T> implements Iterable<T>, Iterator<T> {
 
     private final Cursor cursor;
-    private final ModelBuilder<T> builder;
+    private final ModelHelper<T> builder;
 
     private boolean first;
 
     public ModelIterator(Cursor cursor, Class<T> model, DBAdapter db) {
         this.cursor = cursor;
-        this.builder = new ModelBuilder<T>(model, db);
+        this.builder = new ModelHelper<T>(model, db);
 
         this.first = true;
     }

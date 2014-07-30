@@ -2,11 +2,12 @@ package org.abner.manager.db.model.reader;
 
 import java.lang.reflect.Field;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
-public class BooleanFieldReader extends FieldReader {
+public class BooleanColumn extends Column {
 
-    public BooleanFieldReader(Field field) {
+    public BooleanColumn(Field field) {
         super(field);
     }
 
@@ -17,6 +18,12 @@ public class BooleanFieldReader extends FieldReader {
         } else {
             return Boolean.FALSE;
         }
+    }
+
+    @Override
+    protected void putContentValue(ContentValues contentValues, Object value) {
+        Boolean booleanValue = (Boolean) value;
+        contentValues.put(getName(), booleanValue ? 1 : 0);
     }
 
 }

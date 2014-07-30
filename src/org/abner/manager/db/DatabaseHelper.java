@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.abner.manager.db.model.ModelProperties;
 import org.abner.manager.model.AbstractModel;
 import org.abner.manager.model.Model;
 import org.abner.manager.model.empresa.Empresa;

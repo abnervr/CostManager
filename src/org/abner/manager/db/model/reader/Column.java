@@ -7,55 +7,56 @@ import java.util.Date;
 import java.util.List;
 
 import org.abner.manager.db.DBAdapter;
-import org.abner.manager.db.ModelProperties;
+import org.abner.manager.db.model.ModelProperties;
 import org.abner.manager.model.Model;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-public abstract class FieldReader {
+public abstract class Column {
 
     private final Field field;
 
-    public static List<FieldReader> getReaders(Class<?> model, DBAdapter db) {
-        List<FieldReader> readers = new ArrayList<FieldReader>();
+    public static List<Column> getColumns(Class<?> model, DBAdapter db) {
+        List<Column> readers = new ArrayList<Column>();
 
         for (Field field : ModelProperties.getFields(model)) {
-            readers.add(FieldReader.getReader(field, db));
+            readers.add(Column.getColumn(field, db));
         }
 
         return readers;
     }
 
-    private static FieldReader getReader(Field field, DBAdapter db) {
+    private static Column getColumn(Field field, DBAdapter db) {
         Class<?> type = field.getType();
 
         if (type.equals(Long.class) || type.equals(long.class)) {
-            return new LongFieldReader(field);
+            return new LongColumn(field);
         } else if (type.isEnum()) {
-            return new EnumFieldReader(field);
+            return new EnumColumn(field);
         } else if (type.equals(Integer.class) || type.equals(int.class)) {
-            return new IntegerFieldReader(field);
+            return new IntegerColumn(field);
         } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-            return new BooleanFieldReader(field);
+            return new BooleanColumn(field);
         } else if (type.equals(String.class)) {
-            return new StringFieldReader(field);
+            return new StringColumn(field);
         } else if (type.equals(Date.class)) {
-            return new DateFieldReader(field);
+            return new DateColumn(field);
         } else if (type.equals(BigDecimal.class)) {
-            return new BigDecimalFieldReader(field);
+            return new BigDecimalColumn(field);
         } else if (Model.class.isAssignableFrom(type)) {
             if (db != null) {
-                return new ModelFieldReader(db, field);
+                return new ModelColumn(db, field);
             } else {
-                return new LazyModelFieldReader(field);
+                return new LazyModelColumn(field);
             }
         } else {
             throw new RuntimeException("Tipo de field não suportado.");
         }
     }
 
-    protected FieldReader(Field field) {
+    protected Column(Field field) {
         this.field = field;
         this.field.setAccessible(true);
     }
@@ -64,9 +65,30 @@ public abstract class FieldReader {
         return field.getName();
     }
 
-    public Class<?> getType() {
+    protected Class<?> getType() {
         return field.getType();
     }
+
+    public void putFieldValueInContent(ContentValues contentValues, Object object) {
+        Object value = readFieldValue(object);
+
+        if (value == null) {
+            contentValues.putNull(getName());
+        } else {
+            putContentValue(contentValues, value);
+        }
+    }
+
+    private Object readFieldValue(Object object) {
+        try {
+            return field.get(object);
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Erro ao ler " + getName(), e);
+            return null;
+        }
+    }
+
+    protected abstract void putContentValue(ContentValues contentValues, Object value);
 
     public void readCursorAndSetValue(Object instance, Cursor cursor, int columnIndex) {
         try {

@@ -1,12 +1,11 @@
 package org.abner.manager.db;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.abner.manager.db.model.ModelHelper;
+import org.abner.manager.db.model.ModelIterator;
+import org.abner.manager.db.model.ModelProperties;
 import org.abner.manager.model.Model;
 import org.abner.manager.model.sms.Sms;
 
@@ -107,49 +106,11 @@ public class DBAdapter {
                         whereArgs);
     }
 
-    private ContentValues getContentValues(Model model)
-                    throws IllegalAccessException {
-        ContentValues initialValues = new ContentValues();
+    @SuppressWarnings("unchecked")
+    private <M> ContentValues getContentValues(M model) {
+        ModelHelper<M> modelHelper = new ModelHelper<M>((Class<M>) model.getClass());
+        ContentValues initialValues = modelHelper.getContentValues(model);
 
-        for (Field field : ModelProperties.getFields(model.getClass())) {
-            field.setAccessible(true);
-            Object object = field.get(model);
-
-            if (object == null) {
-                if (Model.class.isAssignableFrom(field.getType())) {
-                    initialValues.putNull(field.getName() + "Id");
-                } else {
-                    initialValues.putNull(field.getName());
-                }
-
-            } else if (object instanceof String) {
-                initialValues.put(field.getName(), (String) object);
-
-            } else if (object instanceof Date) {
-                initialValues.put(field.getName(), ((Date) object).getTime());
-
-            } else if (object instanceof Integer) {
-                initialValues.put(field.getName(), (Integer) object);
-
-            } else if (object instanceof Long) {
-                initialValues.put(field.getName(), (Long) object);
-
-            } else if (object instanceof Boolean) {
-                Boolean booleanValue = (Boolean) object;
-                initialValues.put(field.getName(), booleanValue ? 1 : 0);
-
-            } else if (object instanceof BigDecimal) {
-                BigDecimal bigDecimalValue = (BigDecimal) object;
-                bigDecimalValue.setScale(6, RoundingMode.HALF_UP);
-                initialValues.put(field.getName(), bigDecimalValue.toString());
-
-            } else if (object instanceof Model) {
-                Model parent = (Model) object;
-                initialValues.put(field.getName() + "Id", parent.getId());
-            } else {
-                initialValues.put(field.getName(), object.toString());
-            }
-        }
         return initialValues;
     }
 
@@ -177,22 +138,12 @@ public class DBAdapter {
 
     public <T extends Model> List<T> find(Class<T> model, String where, String[] selectionArgs, String groupBy, String having,
                     String orderBy, String limit) {
-        List<Field> fields = ModelProperties.getFields(model);
-        String[] columns = new String[fields.size()];
-
-        for (int i = 0; i < fields.size(); i++) {
-            Field field = fields.get(i);
-            columns[i] = field.getName();
-
-            if (Model.class.isAssignableFrom(field.getType())) {
-                columns[i] += "Id";
-            }
-        }
+        List<String> columns = ModelProperties.getColumnNames(model);
 
         Cursor cursor = null;
         try {
-            cursor = db.query(dbHelper.getTableName(model), columns, where,
-                            selectionArgs, groupBy, having, orderBy, limit);
+            cursor = db.query(dbHelper.getTableName(model), columns.toArray(new String[columns.size()]),
+                            where, selectionArgs, groupBy, having, orderBy, limit);
             return iterate(model, cursor, false);
         } catch (Exception e) {
             Log.d("DBAdapter", e.getStackTrace().toString());
