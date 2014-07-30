@@ -65,7 +65,7 @@ public abstract class Column {
         return field.getName();
     }
 
-    protected Class<?> getType() {
+    public Class<?> getType() {
         return field.getType();
     }
 
@@ -99,5 +99,9 @@ public abstract class Column {
     }
 
     protected abstract Object read(Cursor cursor, int columnIndex);
+
+    public boolean isModel() {
+        return false;
+    }
 
 }

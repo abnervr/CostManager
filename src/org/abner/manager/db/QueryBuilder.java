@@ -1,18 +1,16 @@
 package org.abner.manager.db;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.abner.manager.db.model.ModelProperties;
+import org.abner.manager.db.model.Table;
 
 public class QueryBuilder {
 
-    private final Class<?> model;
-    private final List<Class<?>> dependences = new ArrayList<Class<?>>();
+    private final Table<?> table;
     private StringBuilder sb;
 
-    public QueryBuilder(Class<?> model) {
-        this.model = model;
+    public <T> QueryBuilder(Class<T> model) {
+        this.table = new Table<T>(model);
     }
 
     public String buildQuery(String where, String order) {
@@ -28,14 +26,51 @@ public class QueryBuilder {
 
     private void appendColumns() {
         sb.append("select ");
-        for (String column : ModelProperties.getColumnNames(model)) {
+
+        boolean first = true;
+        for (String column : table.getColumnNames()) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(", ");
+            }
             sb.append(column);
         }
-        sb.append(' ');
+        appendDependences(table.getDependences());
+    }
+
+    private void appendDependences(List<Table<?>> dependences) {
+        for (Table<?> dependence : dependences) {
+            for (String column : dependence.getColumnNames()) {
+                sb.append(", ");
+                sb.append(dependence.getName());
+                sb.append(".");
+                sb.append(column);
+
+                sb.append(" as ");
+                sb.append(dependence.getName());
+                sb.append("_");
+                sb.append(column);
+
+            }
+        }
     }
 
     private void appendFrom() {
-        sb.append("from ");
+        sb.append(" from ");
+        sb.append(table.getName());
+        for (Table<?> dependence : table.getDependences()) {
+            sb.append(" left outer join ");
+            sb.append(dependence.getName());
+            sb.append(" on ");
+            sb.append(table.getName());
+            sb.append(".");
+            //TODO
+            sb.append("");
+            sb.append(" = ");
+            sb.append(dependence.getName());
+            sb.append(".id");
+        }
     }
 
     private void appendWhere(String where) {

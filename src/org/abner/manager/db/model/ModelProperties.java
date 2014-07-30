@@ -12,7 +12,7 @@ public class ModelProperties {
     private static final Map<Class<?>, List<Field>> fields = new HashMap<Class<?>, List<Field>>();
 
     public static <M> List<String> getColumnNames(Class<M> model) {
-        return new ModelHelper<M>(model).getColumnNames();
+        return new Table<M>(model).getColumnNames();
     }
 
     /**

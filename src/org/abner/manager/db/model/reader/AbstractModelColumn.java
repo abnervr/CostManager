@@ -22,4 +22,9 @@ public abstract class AbstractModelColumn extends Column {
         contentValues.put(getName(), ((Model) value).getId());
     }
 
+    @Override
+    public boolean isModel() {
+        return true;
+    }
+
 }

@@ -10,18 +10,54 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-public class ModelHelper<T> {
+public class Table<T> {
 
     private final Class<T> model;
     private final List<Column> columns = new ArrayList<Column>();
 
-    public ModelHelper(Class<T> model) {
+    private List<Table<?>> dependences;
+
+    public Table(Class<T> model) {
         this(model, null);
     }
 
-    public ModelHelper(Class<T> model, DBAdapter db) {
+    public Table(Class<T> model, DBAdapter db) {
         this.model = model;
         this.columns.addAll(Column.getColumns(model, db));
+    }
+
+    public String getName() {
+        String simpleName = model.getSimpleName();
+        String name = "";
+
+        for (char c : simpleName.toCharArray()) {
+            if (name.isEmpty()) {
+                name += Character.toLowerCase(c);
+            } else if (Character.isUpperCase(c)) {
+                name += "_" + Character.toLowerCase(c);
+            } else {
+                name += c;
+            }
+        }
+
+        return name;
+    }
+
+    public List<Table<?>> getDependences() {
+        if (dependences == null) {
+            dependences = new ArrayList<Table<?>>();
+            for (Column column : columns) {
+                if (column.isModel()) {
+                    Table<?> helper = createHelper(column.getType());
+                    dependences.add(helper);
+                }
+            }
+        }
+        return dependences;
+    }
+
+    private <X> Table<X> createHelper(Class<X> model) {
+        return new Table<X>(model);
     }
 
     public T build(Cursor cursor) {
@@ -59,6 +95,7 @@ public class ModelHelper<T> {
         for (Column column : columns) {
             column.putFieldValueInContent(contentValues, model);
         }
+
         return contentValues;
     }
 
@@ -71,4 +108,5 @@ public class ModelHelper<T> {
 
         return names;
     }
+
 }

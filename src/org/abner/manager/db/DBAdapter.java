@@ -3,7 +3,7 @@ package org.abner.manager.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.abner.manager.db.model.ModelHelper;
+import org.abner.manager.db.model.Table;
 import org.abner.manager.db.model.ModelIterator;
 import org.abner.manager.db.model.ModelProperties;
 import org.abner.manager.model.Model;
@@ -108,7 +108,7 @@ public class DBAdapter {
 
     @SuppressWarnings("unchecked")
     private <M> ContentValues getContentValues(M model) {
-        ModelHelper<M> modelHelper = new ModelHelper<M>((Class<M>) model.getClass());
+        Table<M> modelHelper = new Table<M>((Class<M>) model.getClass());
         ContentValues initialValues = modelHelper.getContentValues(model);
 
         return initialValues;

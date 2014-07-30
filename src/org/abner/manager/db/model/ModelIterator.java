@@ -9,13 +9,13 @@ import android.database.Cursor;
 public class ModelIterator<T> implements Iterable<T>, Iterator<T> {
 
     private final Cursor cursor;
-    private final ModelHelper<T> builder;
+    private final Table<T> builder;
 
     private boolean first;
 
     public ModelIterator(Cursor cursor, Class<T> model, DBAdapter db) {
         this.cursor = cursor;
-        this.builder = new ModelHelper<T>(model, db);
+        this.builder = new Table<T>(model, db);
 
         this.first = true;
     }
