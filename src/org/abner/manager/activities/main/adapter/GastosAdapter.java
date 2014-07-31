@@ -1,13 +1,13 @@
 package org.abner.manager.activities.main.adapter;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.main.adapter.GastosAdapter.Gasto;
+import org.abner.manager.activities.main.adapter.gastos.Gasto;
+import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.db.DBAdapter;
 import org.abner.manager.model.movimento.TipoMovimento;
 
@@ -19,63 +19,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class GastosAdapter extends MainAdapter<Gasto> {
-
-    public static class Gasto {
-
-        private String periodo;
-
-        private BigDecimal credito = BigDecimal.ZERO;
-        private BigDecimal debito = BigDecimal.ZERO;
-
-        public String getPeriodo() {
-            return periodo;
-        }
-
-        public void setPeriodo(String periodo) {
-            this.periodo = periodo;
-        }
-
-        public BigDecimal getCredito() {
-            return credito;
-        }
-
-        public void setCredito(BigDecimal credito) {
-            this.credito = credito;
-        }
-
-        public BigDecimal getDebito() {
-            return debito;
-        }
-
-        public void setDebito(BigDecimal debito) {
-            this.debito = debito;
-        }
-
-        private BigDecimal getSaldo() {
-            if (credito != null && debito != null) {
-                return credito.subtract(debito);
-            }
-            return null;
-        }
-
-    }
-
-    public enum Grouping {
-        DIA("%Y %m %d"),
-        SEMANA("%Y %W "),
-        MES("%Y %m"),
-        ANO("%Y");
-
-        private String format;
-
-        private Grouping(String format) {
-            this.format = format;
-        }
-
-        public String getFormat() {
-            return format;
-        }
-    }
 
     private final LayoutInflater inflater;
     private final Grouping groupBy;
@@ -99,7 +42,10 @@ public class GastosAdapter extends MainAdapter<Gasto> {
                         cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1);
                         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]));
 
-                        gasto.setPeriodo(DateFormat.getDateFormat(getContext()).format(cal.getTime()));
+                        gasto.setPeriodo(
+                                        DateFormat.format("E", cal.getTime())
+                                                        + ", " +
+                                                        DateFormat.getDateFormat(getContext()).format(cal.getTime()));
                     }
                     break;
                 case SEMANA:

@@ -3,8 +3,10 @@ package org.abner.manager.activities.main;
 import org.abner.manager.R;
 import org.abner.manager.Settings;
 import org.abner.manager.SmsReadTask;
+import org.abner.manager.activities.cadastro.empresa.EmpresaActivity;
 import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
-import org.abner.manager.activities.main.adapter.GastosAdapter.Grouping;
+import org.abner.manager.activities.cadastro.tipo.TipoActivity;
+import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.activities.settings.SettingsActivity;
 import org.abner.manager.db.DBAdapter;
 
@@ -128,15 +130,24 @@ public class MainActivity extends Activity
             case R.id.action_gasto_dia:
                 updateFragment(Grouping.DIA);
                 return true;
+
             case R.id.action_adicionar:
                 Intent intent = new Intent(this, MovimentoActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_empresas:
+                intent = new Intent(this, EmpresaActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_tipos:
+                intent = new Intent(this, TipoActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.action_refresh:
                 SmsReadTask task = new SmsReadTask(this);
                 task.execute();
                 return true;
-
             case R.id.action_settings:
                 intent = new Intent(this, SettingsActivity.class);
                 startActivityForResult(intent, 0);

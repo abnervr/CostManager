@@ -3,10 +3,10 @@ package org.abner.manager.activities.main;
 import org.abner.manager.R;
 import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
 import org.abner.manager.activities.main.adapter.GastosAdapter;
-import org.abner.manager.activities.main.adapter.GastosAdapter.Grouping;
 import org.abner.manager.activities.main.adapter.MainAdapter;
 import org.abner.manager.activities.main.adapter.MovimentoAdapter;
 import org.abner.manager.activities.main.adapter.SmsAdapter;
+import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.model.movimento.Movimento;
 
 import android.app.ListFragment;

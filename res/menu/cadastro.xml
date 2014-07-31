@@ -3,4 +3,10 @@
           android:icon="@android:drawable/ic_menu_add"
           android:title="@string/adicionar"
           android:showAsAction="always"/>
+    
+    <item android:id="@+id/action_empresas"
+          android:title="@string/empresas"/>
+    
+    <item android:id="@+id/action_tipos"
+          android:title="@string/tipos"/>
 </menu>

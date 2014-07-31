@@ -26,7 +26,15 @@
             android:name="org.abner.manager.activities.cadastro.movimento.MovimentoActivity"
             android:label="@string/title_activity_control" >
         </activity>
-
+		<activity
+            android:name="org.abner.manager.activities.cadastro.empresa.EmpresaActivity"
+            android:label="@string/empresas" >
+        </activity>
+        <activity
+            android:name="org.abner.manager.activities.cadastro.tipo.TipoActivity"
+            android:label="@string/tipos" >
+        </activity>
+        
         <receiver android:name=".SmsReader" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />

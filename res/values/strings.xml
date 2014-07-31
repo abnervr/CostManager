@@ -25,6 +25,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="credito">Crédito</string>
+    <string name="debito">Débito</string>
+    <string name="saldo">Saldo</string>
     <string name="valor">Valor</string>
     <string name="salvar">Salvar</string>
     <string name="deletar">Deletar</string>
@@ -41,5 +43,7 @@
     <string name="cancel">Cancelar</string>
     <string name="tipo">Tipo</string>
     <string name="data">Data</string>
+    <string name="empresas">Empresas</string>
+    <string name="tipos">Tipos</string>
 
 </resources>
