@@ -17,9 +17,10 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class GastosAdapter extends MainAdapter<Gasto> {
+public class GastosAdapter extends AbstractMainAdapter<Gasto> {
 
     private final LayoutInflater inflater;
     private final Grouping groupBy;
@@ -138,6 +139,22 @@ public class GastosAdapter extends MainAdapter<Gasto> {
 
         tv = (TextView) convertView.findViewById(R.id.saldo);
         tv.setText(format.format(gasto.getSaldo()));
+
+        LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.gastos_summary);
+        for (Gasto g : gasto.getGastos()) {
+            View row = inflater.inflate(R.layout.layout_row, null);
+
+            TextView view = (TextView) row.findViewById(R.id.name);
+            view.setText(g.getEmpresa());
+            if (g.getTipo() != null) {
+                view.setText(view.getText() + " " + g.getTipo());
+            }
+
+            view = (TextView) row.findViewById(R.id.subname);
+            view.setText(format.format(g.getDebito()));
+
+            linearLayout.addView(row);
+        }
 
         return convertView;
     }

@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class SmsAdapter extends MainAdapter<Sms> {
+public class SmsAdapter extends AbstractMainAdapter<Sms> {
 
     private final LayoutInflater inflater;
 

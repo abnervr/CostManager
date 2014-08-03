@@ -1,4 +1,4 @@
-package org.abner.manager.activities.main.adapter.gastos;
+package org.abner.manager.model.views;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -73,6 +73,13 @@
 	            android:textSize="14sp"
 	            android:gravity="right" />
         </LinearLayout>
-    </LinearLayout  >
+    </LinearLayout>
+    
+    <LinearLayout
+        	android:id="@+id/gastos_summary"
+        	android:layout_height="wrap_content"
+        	android:layout_width="match_parent"
+        	android:orientation="vertical"/>
+        
 
 </LinearLayout>

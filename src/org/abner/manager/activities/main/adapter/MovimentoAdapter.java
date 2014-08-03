@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MovimentoAdapter extends MainAdapter<Movimento> {
+public class MovimentoAdapter extends AbstractMainAdapter<Movimento> {
 
     private final LayoutInflater inflater;
 

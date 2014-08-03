@@ -75,7 +75,7 @@ public class MainFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         if (getListAdapter() instanceof MainAdapter) {
-            ((MainAdapter<?>) getListAdapter()).update();
+            ((MainAdapter) getListAdapter()).update();
         }
     }
 }
