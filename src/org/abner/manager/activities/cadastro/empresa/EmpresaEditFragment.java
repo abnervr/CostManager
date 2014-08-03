@@ -68,7 +68,7 @@ public class EmpresaEditFragment extends DialogFragment {
 
                                     empresa.setNome(nome);
                                     empresa.setTipo(tipo);
-                                    new EmpresaDAO(getActivity()).insert(empresa);
+                                    new EmpresaDAO(getActivity()).update(empresa);
 
                                     dismiss();
                                 } else {
