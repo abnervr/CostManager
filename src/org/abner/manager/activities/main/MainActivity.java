@@ -13,6 +13,7 @@ import org.abner.manager.db.DBAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -60,7 +61,7 @@ public class MainActivity extends Activity
     }
 
     private void updateFragment(Grouping grouping) {
-        MainFragment fragment = MainFragment.buildFragment(program, grouping);
+        Fragment fragment = MainFragment.buildFragment(program, grouping);
 
         getFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment).commit();

@@ -1,17 +1,24 @@
 package org.abner.manager.activities.main.fragment;
 
+import java.util.List;
+
 import org.abner.manager.R;
-import org.abner.manager.activities.main.MainFragment;
 import org.abner.manager.activities.main.adapter.GastosAdapter;
 import org.abner.manager.activities.main.adapter.gastos.Grouping;
+import org.abner.manager.model.views.Gasto;
+import org.abner.manager.repository.views.GastosDataProvider;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
-public class GastosFragment extends MainFragment {
+public class GastosFragment extends Fragment {
+
+    public static final String GROUPING_ID = "grouping_id";
 
     private Grouping grouping;
 
@@ -28,9 +35,14 @@ public class GastosFragment extends MainFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View onCreateView = super.onCreateView(inflater, container, savedInstanceState);
-        setListAdapter(new GastosAdapter(getActivity(), grouping));
-        return onCreateView;
+        View view = inflater.inflate(R.layout.fragment_gastos, container, false);
+
+        ExpandableListView expandableListView = (ExpandableListView) view.findViewById(android.R.id.list);
+
+        List<Gasto> gastos = new GastosDataProvider(getActivity()).find(grouping);
+        expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
+
+        return view;
     }
 
     @Override

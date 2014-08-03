@@ -13,9 +13,9 @@ import org.abner.manager.repository.GenericDataProvider;
 import android.content.Context;
 import android.text.format.DateFormat;
 
-public class GastosDao extends GenericDataProvider<Gasto> {
+public class GastosDataProvider extends GenericDataProvider<Gasto> {
 
-    public GastosDao(Context context) {
+    public GastosDataProvider(Context context) {
         super(context);
     }
 
@@ -42,7 +42,7 @@ public class GastosDao extends GenericDataProvider<Gasto> {
 
         List<Gasto> gastos = super.find(query);
 
-        group(gastos);
+        gastos = group(gastos);
 
         for (Gasto gasto : gastos) {
             gasto.setPeriodo(formatPeriodo(gasto.getPeriodo(), groupBy));
