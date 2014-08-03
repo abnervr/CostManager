@@ -15,24 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A fragment representing a single Item detail screen. This fragment is either
- * contained in a {@link ItemListActivity} in two-pane mode (on tablets) or a
- * {@link ItemDetailActivity} on handsets.
- */
 public class MainFragment extends ListFragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_ITEM_ID = "item_id";
-
-    public static final String GROUPING_ID = "grouping_id";
 
     public static Fragment buildFragment(Program program, Grouping grouping) {
-        Bundle arguments = new Bundle();
-        arguments.putString(MainFragment.ARG_ITEM_ID, program.toString());
-
         Fragment fragment;
         switch (program) {
             case CADASTRO:
@@ -45,22 +30,20 @@ public class MainFragment extends ListFragment {
                 fragment = new SmsFragment();
                 break;
             case GASTOS:
-                arguments.putString(MainFragment.GROUPING_ID, grouping.toString());
+                Bundle arguments = new Bundle();
+                arguments.putString(GastosFragment.GROUPING_ID, grouping.toString());
+
                 fragment = new GastosFragment();
+                fragment.setArguments(arguments);
                 break;
             default:
                 fragment = new MainFragment();
                 break;
         }
-        fragment.setArguments(arguments);
 
         return fragment;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public MainFragment() {}
 
     @Override
