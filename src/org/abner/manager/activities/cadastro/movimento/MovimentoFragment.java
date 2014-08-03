@@ -118,7 +118,9 @@ public class MovimentoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CHANGE_EMPRESA) {
-            movimento = new MovimentoDao(getActivity()).find(movimento.getId());
+            if (movimento.getId() != null) {
+                movimento = new MovimentoDao(getActivity()).find(movimento.getId());
+            }
 
             TextView view = (TextView) getActivity().findViewById(R.id.movimento_empresa);
             if (movimento.getEmpresa() != null) {
