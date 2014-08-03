@@ -11,6 +11,7 @@ import org.abner.manager.activities.settings.SettingsActivity;
 import org.abner.manager.db.DBAdapter;
 
 import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,20 +19,17 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends Activity
-                implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+                implements NavigationDrawerFragment.NavigationDrawerCallbacks, OnNavigationListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
 
     private Program program;
 
@@ -44,7 +42,6 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                         getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -69,15 +66,13 @@ public class MainActivity extends Activity
                         .replace(R.id.container, fragment).commit();
     }
 
-    public void onSectionAttached(int number) {
-        mTitle = Program.values()[number].toString();
-    }
+    public void onSectionAttached(int number) {}
 
-    public void restoreActionBar() {
+    public void restoreActionBar(String title) {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(title);
     }
 
     @Override
@@ -86,22 +81,33 @@ public class MainActivity extends Activity
             switch (program) {
                 case CADASTRO:
                     getMenuInflater().inflate(R.menu.cadastro, menu);
-                    restoreActionBar();
+                    restoreActionBar("Cadastro");
                     return true;
                 case GASTOS:
                     getMenuInflater().inflate(R.menu.gastos, menu);
-                    restoreActionBar();
+
+                    ActionBar actionBar = getActionBar();
+                    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+                    SpinnerAdapter gastosSpinnerAdapter = new ArrayAdapter<Grouping>(this,
+                                    android.R.layout.simple_spinner_dropdown_item,
+                                    Grouping.values());
+                    actionBar.setListNavigationCallbacks(gastosSpinnerAdapter, this);
+                    actionBar.setDisplayShowTitleEnabled(false);
+                    actionBar.setTitle("Gastos");
+                    actionBar.setSelectedNavigationItem(2);
+
                     return true;
                 case SMS:
                     getMenuInflater().inflate(R.menu.main, menu);
-                    restoreActionBar();
+                    restoreActionBar("Sms");
                     return true;
                 case RELATORIOS:
                     // Only show items in the action bar relevant to this screen
                     // if the drawer is not showing. Otherwise, let the drawer
                     // decide what to show in the action bar.
                     getMenuInflater().inflate(R.menu.main2, menu);
-                    restoreActionBar();
+                    restoreActionBar("Relatórios");
                     return true;
                 default:
                     break;
@@ -113,16 +119,10 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_gasto_ano:
+            case R.id.action_gasto_empresas:
                 updateFragment(Grouping.ANO);
                 return true;
-            case R.id.action_gasto_mes:
-                updateFragment(Grouping.MES);
-                return true;
-            case R.id.action_gasto_semana:
-                updateFragment(Grouping.SEMANA);
-                return true;
-            case R.id.action_gasto_dia:
+            case R.id.action_gasto_tipos:
                 updateFragment(Grouping.DIA);
                 return true;
 
@@ -157,6 +157,12 @@ public class MainActivity extends Activity
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        updateFragment(Grouping.values()[itemPosition]);
+        return true;
     }
 
 }

@@ -1,6 +1,7 @@
 package org.abner.manager.activities.main.adapter;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +33,7 @@ public class GastosAdapter extends MainAdapter<Gasto> {
     @Override
     protected List<Gasto> getItems() {
         List<Gasto> gastos = findGastos();
+
         for (Gasto gasto : gastos) {
             switch (groupBy) {
                 case DIA:
@@ -69,6 +71,26 @@ public class GastosAdapter extends MainAdapter<Gasto> {
         return gastos;
     }
 
+    private List<Gasto> group(List<Gasto> gastos) {
+        List<Gasto> groupedGastos = new ArrayList<Gasto>();
+
+        Gasto groupGasto = null;
+        for (Gasto gasto : gastos) {
+            if (groupGasto != null && groupGasto.getPeriodo().equals(gasto.getPeriodo())) {
+                groupGasto.addGasto(gasto);
+            } else {
+                groupGasto = new Gasto();
+                groupGasto.setPeriodo(gasto.getPeriodo());
+
+                groupGasto.addGasto(gasto);
+
+                groupedGastos.add(groupGasto);
+            }
+        }
+
+        return groupedGastos;
+    }
+
     private List<Gasto> findGastos() {
         DBAdapter db = new DBAdapter(getContext());
         try {
@@ -76,12 +98,20 @@ public class GastosAdapter extends MainAdapter<Gasto> {
 
             String query = "select " +
                             " strftime('" + groupBy.getFormat() + "', datetime(data/1000, 'unixepoch')) as periodo, " +
+                            " empresa.nome as empresa, " +
+                            " tipo.descricao as tipo, " +
                             " sum(case when tipo = '" + TipoMovimento.CREDITO.toString() + "' then valor else 0 end) as credito, " +
                             " sum(case when tipo = '" + TipoMovimento.DEBITO.toString() + "' then valor else 0 end) as debito " +
                             "from Movimento " +
-                            "group by strftime('" + groupBy.getFormat() + "', datetime(data/1000, 'unixepoch')) " +
+                            "left outer join Empresa on (Movimento.empresaId = Empresa.id) " +
+                            "left outer join Tipo on (Empresa.tipoId = Tipo.id) " +
+                            "group by" +
+                            " strftime('" + groupBy.getFormat() + "', datetime(data/1000, 'unixepoch')), " +
+                            " empresa.nome, " +
+                            " tipo.descricao " +
                             "order by 1 desc";
-            return db.find(Gasto.class, query, null);
+            List<Gasto> gastos = db.find(Gasto.class, query, null);
+            return group(gastos);
         } finally {
             db.close();
         }

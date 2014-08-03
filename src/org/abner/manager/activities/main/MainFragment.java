@@ -8,7 +8,6 @@ import org.abner.manager.activities.main.fragment.GastosFragment;
 import org.abner.manager.activities.main.fragment.RelatorioFragment;
 import org.abner.manager.activities.main.fragment.SmsFragment;
 
-import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,7 +32,7 @@ public class MainFragment extends ListFragment {
         Bundle arguments = new Bundle();
         arguments.putString(MainFragment.ARG_ITEM_ID, program.toString());
 
-        Fragment fragment;
+        MainFragment fragment;
         switch (program) {
             case CADASTRO:
                 fragment = new CadastroFragment();
@@ -54,7 +53,7 @@ public class MainFragment extends ListFragment {
         }
         fragment.setArguments(arguments);
 
-        return null;
+        return fragment;
     }
 
     /**
