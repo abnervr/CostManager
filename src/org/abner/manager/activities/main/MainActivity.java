@@ -63,12 +63,7 @@ public class MainActivity extends Activity
     }
 
     private void updateFragment(Grouping grouping) {
-        Bundle arguments = new Bundle();
-        arguments.putString(MainFragment.ARG_ITEM_ID, program.toString());
-        arguments.putString(MainFragment.GROUPING_ID, grouping.toString());
-
-        MainFragment fragment = new MainFragment();
-        fragment.setArguments(arguments);
+        MainFragment fragment = MainFragment.buildFragment(program, grouping);
 
         getFragmentManager().beginTransaction()
                         .replace(R.id.container, fragment).commit();
