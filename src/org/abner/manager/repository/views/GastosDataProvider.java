@@ -2,6 +2,8 @@ package org.abner.manager.repository.views;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +48,13 @@ public class GastosDataProvider extends GenericDataProvider<Gasto> {
 
         for (Gasto gasto : gastos) {
             gasto.setPeriodo(formatPeriodo(gasto.getPeriodo(), groupBy));
+            Collections.sort(gasto.getGastos(), new Comparator<Gasto>() {
+
+                @Override
+                public int compare(Gasto lhs, Gasto rhs) {
+                    return rhs.getDebito().compareTo(lhs.getDebito());
+                }
+            });
         }
 
         return gastos;

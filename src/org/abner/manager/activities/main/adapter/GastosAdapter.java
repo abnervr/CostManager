@@ -61,7 +61,7 @@ public class GastosAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.layout_gastos_row, parent, false);
+            convertView = inflater.inflate(R.layout.layout_gastos_group_row, parent, false);
         }
 
         Gasto gasto = getGroup(groupPosition);
@@ -86,20 +86,20 @@ public class GastosAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.layout_row, parent, false);
+            convertView = inflater.inflate(R.layout.layout_gastos_child_row, parent, false);
         }
 
         Gasto gasto = getChild(groupPosition, childPosition);
 
-        TextView view = (TextView) convertView.findViewById(R.id.name);
+        TextView view = (TextView) convertView.findViewById(R.id.gastos_child_group);
         view.setText(gasto.getEmpresa());
-        if (gasto.getTipo() != null) {
-            view.setText(view.getText() + " " + gasto.getTipo());
-        }
+
+        view = (TextView) convertView.findViewById(R.id.gastos_child_type);
+        view.setText(gasto.getTipo());
 
         NumberFormat format = NumberFormat.getCurrencyInstance();
 
-        view = (TextView) convertView.findViewById(R.id.subname);
+        view = (TextView) convertView.findViewById(R.id.gastos_child_value);
         view.setText(format.format(gasto.getDebito()));
 
         return convertView;

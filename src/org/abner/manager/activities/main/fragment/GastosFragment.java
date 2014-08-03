@@ -41,6 +41,7 @@ public class GastosFragment extends Fragment {
 
         List<Gasto> gastos = new GastosDataProvider(getActivity()).find(grouping);
         expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
+        expandableListView.setGroupIndicator(null);
 
         return view;
     }
