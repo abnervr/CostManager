@@ -1,6 +1,7 @@
 package org.abner.manager.activities.cadastro.empresa;
 
 import org.abner.manager.R;
+import org.abner.manager.activities.cadastro.common.EmpresaFragment;
 import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.repository.empresa.dao.EmpresaDAO;
 
@@ -24,10 +25,10 @@ public class EmpresaActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Empresa empresa = (Empresa) l.getItemAtPosition(position);
 
-        DialogFragment d = new EmpresaEditFragment();
+        DialogFragment d = new EmpresaFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable(EmpresaEditFragment.ARG_LISTENER, empresa);
+        args.putSerializable(EmpresaFragment.ARG_EMPRESA, empresa);
         d.setArguments(args);
 
         d.show(getFragmentManager(), "EditEmpresa");

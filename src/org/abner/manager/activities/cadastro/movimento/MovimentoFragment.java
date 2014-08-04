@@ -4,7 +4,7 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.cadastro.common.EmpresaFragment;
+import org.abner.manager.activities.cadastro.common.EmpresaListFragment;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.repository.movimento.dao.MovimentoDao;
@@ -100,7 +100,7 @@ public class MovimentoFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                DialogFragment dialog = new EmpresaFragment();
+                DialogFragment dialog = new EmpresaListFragment();
 
                 Bundle args = new Bundle();
                 args.putSerializable("movimento", movimento);
