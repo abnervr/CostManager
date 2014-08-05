@@ -87,8 +87,6 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
             new MovimentoDao(getActivity()).update(movimento);
 
             getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
-        }
-        if (empresas.isEmpty()) {
             dismiss();
         }
     }
