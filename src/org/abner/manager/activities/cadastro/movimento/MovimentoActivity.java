@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.cadastro.movimento.adapter.SmsFragment;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.repository.movimento.MovimentoRepository;

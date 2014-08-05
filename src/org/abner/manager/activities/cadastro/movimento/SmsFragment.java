@@ -1,4 +1,4 @@
-package org.abner.manager.activities.cadastro.movimento.adapter;
+package org.abner.manager.activities.cadastro.movimento;
 
 import org.abner.manager.R;
 import org.abner.manager.model.movimento.Movimento;
