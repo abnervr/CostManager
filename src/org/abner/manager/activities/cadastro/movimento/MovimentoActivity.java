@@ -160,9 +160,6 @@ public class MovimentoActivity extends Activity {
                 case 1:
                     fragment = new MovimentoItemFragment();
                     break;
-                case 2:
-                    fragment = new SmsFragment();
-                    break;
                 default:
                     fragment = null;
                     break;
@@ -179,7 +176,7 @@ public class MovimentoActivity extends Activity {
         public int getCount() {
             if (movimento != null && movimento.getId() != null) {
                 // Show 3 total pages.
-                return 3;
+                return 2;
             } else {
                 return 1;
             }
@@ -192,9 +189,7 @@ public class MovimentoActivity extends Activity {
                 case 0:
                     return getString(R.string.movimentos).toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return getString(R.string.produto).toUpperCase(l);
             }
             return null;
         }
