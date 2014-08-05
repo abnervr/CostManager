@@ -115,8 +115,6 @@ public class MovimentoFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == CHANGE_EMPRESA) {
             if (movimento.getId() != null) {
                 movimento = new MovimentoDao(getActivity()).find(movimento.getId());

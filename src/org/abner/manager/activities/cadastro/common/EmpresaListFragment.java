@@ -52,7 +52,6 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
                     Empresa empresa = empresas.get(which);
 
                     onEmpresaCreated(empresa);
-                    dismiss();
                 }
 
             });
