@@ -35,7 +35,7 @@ public class EmpresaFragment extends DialogFragment {
 
     private OnEmpresaCreatedListener listener;
 
-    private Empresa empresa;
+    private Empresa empresa = new Empresa();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,9 +81,6 @@ public class EmpresaFragment extends DialogFragment {
                                 if (!nome.trim().isEmpty()) {
                                     Tipo tipo = getTipo(textView);
 
-                                    if (empresa == null) {
-                                        empresa = new Empresa();
-                                    }
                                     empresa.setNome(nome);
                                     empresa.setTipo(tipo);
                                     EmpresaRepository empresaRepository = new EmpresaDAO(getActivity());
