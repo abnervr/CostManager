@@ -16,6 +16,12 @@ public interface Repository<M extends Model> {
 
     long insert(final M entity);
 
+    /**
+     * Atualiza uma entidade
+     * 
+     * @param entity
+     * @return quantidade de entidades atualizadas
+     */
     long update(final M entity);
 
 }
