@@ -65,4 +65,9 @@
 			android:inputType="none"
 			android:hint="@string/empresa"/>
     
+    <TextView
+       	android:id="@+id/sms_body"
+           android:layout_height="wrap_content"
+           android:layout_width="fill_parent"/>
+    
 </LinearLayout>

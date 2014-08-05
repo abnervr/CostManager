@@ -7,7 +7,9 @@ import org.abner.manager.R;
 import org.abner.manager.activities.cadastro.common.EmpresaListFragment;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
+import org.abner.manager.model.sms.Sms;
 import org.abner.manager.repository.movimento.dao.MovimentoDao;
+import org.abner.manager.repository.sms.dao.SmsDao;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -110,6 +112,13 @@ public class MovimentoFragment extends Fragment {
                 dialog.show(getFragmentManager(), "Empresa");
             }
         });
+
+        Sms sms = new SmsDao(getActivity()).findByMovimento(movimento);
+        if (sms != null) {
+            view = (TextView) rootView.findViewById(R.id.sms_body);
+            view.setText(sms.getBody());
+        }
+
         return rootView;
     }
 
