@@ -1,6 +1,7 @@
 package org.abner.manager.repository.movimento.dao;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 import org.abner.manager.model.movimento.Movimento;
@@ -73,6 +74,10 @@ public class MovimentoDao extends GenericDAO<Movimento> implements MovimentoRepo
 
     @Override
     public List<Movimento> getMovimentosFilhos(Movimento movimento) {
-        return find("select * from Movimento where movimentoPaiId = ?", movimento.getId());
+        if (movimento == null || movimento.getId() == null) {
+            return Collections.emptyList();
+        } else {
+            return find("select * from Movimento where movimentoPaiId = ?", movimento.getId());
+        }
     }
 }

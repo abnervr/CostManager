@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import org.abner.manager.R;
 import org.abner.manager.activities.cadastro.common.EmpresaListFragment;
+import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.model.sms.Sms;
@@ -54,6 +55,8 @@ public class MovimentoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         movimento = (Movimento) getArguments().getSerializable("movimento");
 
         if (movimento.getMovimentoPai() != null) {
@@ -154,13 +157,12 @@ public class MovimentoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CHANGE_EMPRESA) {
-            if (movimento.getId() != null) {
-                movimento = new MovimentoDao(getActivity()).find(movimento.getId());
-            }
+            Empresa empresa = (Empresa) data.getSerializableExtra("EMPRESA");
+            movimento.setEmpresa(empresa);
 
             TextView view = (TextView) getActivity().findViewById(R.id.movimento_empresa);
-            if (movimento.getEmpresa() != null) {
-                view.setText(movimento.getEmpresa().getNome());
+            if (empresa != null) {
+                view.setText(empresa.getNome());
                 Log.i("MovimentoFragment", "update " + movimento.getEmpresa().getNome());
             } else {
                 view.setText(null);
@@ -172,11 +174,9 @@ public class MovimentoFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.control, menu);
-        if (movimento.getId() == null || readOnly) {
+        if (movimento.getId() == null) {
             MenuItem item = menu.findItem(R.id.action_delete);
             item.setEnabled(false);
         }
@@ -212,17 +212,22 @@ public class MovimentoFragment extends Fragment {
             case R.id.action_delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
-                builder.setMessage("Deseja remover o movimento?");
-                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                if (readOnly) {
+                    builder.setMessage("Não é possível remover esse movimento");
+                    builder.setNeutralButton("OK", null);
+                } else {
+                    builder.setMessage("Deseja remover o movimento?");
+                    builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        MovimentoRepository movimentoRepository = new MovimentoDao(getActivity());
-                        movimentoRepository.remove(movimento);
-                        getActivity().finish();
-                    }
-                });
-                builder.setNegativeButton("Não", null);
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MovimentoRepository movimentoRepository = new MovimentoDao(getActivity());
+                            movimentoRepository.remove(movimento);
+                            getActivity().finish();
+                        }
+                    });
+                    builder.setNegativeButton("Não", null);
+                }
                 builder.show();
                 return true;
         }

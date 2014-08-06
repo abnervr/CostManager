@@ -8,29 +8,30 @@ import org.abner.manager.activities.cadastro.movimento.adapter.EmpresaAdapter;
 import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.repository.empresa.dao.EmpresaDAO;
-import org.abner.manager.repository.movimento.dao.MovimentoDao;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 @SuppressWarnings("serial")
 public class EmpresaListFragment extends DialogFragment implements OnEmpresaCreatedListener, Serializable {
 
-    private Movimento movimento;
+    private Empresa empresa;
     private List<Empresa> empresas;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            movimento = (Movimento) getArguments().getSerializable("movimento");
+            Movimento movimento = (Movimento) getArguments().getSerializable("movimento");
+            empresas = new EmpresaDAO(getActivity()).findOrderingByUse(movimento.getData(), movimento.getTipo());
+            empresa = movimento.getEmpresa();
         }
-        empresas = new EmpresaDAO(getActivity()).findOrderingByUse(movimento.getData(), movimento.getTipo());
     }
 
     @Override
@@ -40,8 +41,8 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
 
         if (!empresas.isEmpty()) {
             int checkedItem = -1;
-            if (movimento.getEmpresa() != null) {
-                checkedItem = empresas.indexOf(movimento.getEmpresa());
+            if (empresa != null) {
+                checkedItem = empresas.indexOf(empresa);
             }
             builder.setSingleChoiceItems(new EmpresaAdapter(getActivity(), empresas), checkedItem, new OnClickListener() {
 
@@ -82,12 +83,11 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
     @Override
     public void onEmpresaCreated(Empresa empresa) {
         if (empresa != null) {
-            movimento.setEmpresa(empresa);
-            new MovimentoDao(getActivity()).update(movimento);
-
-            getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
-            dismiss();
+            Intent intent = new Intent();
+            intent.putExtra("EMPRESA", empresa);
+            getTargetFragment().onActivityResult(getTargetRequestCode(), 1, intent);
         }
+        dismiss();
     }
 
 }

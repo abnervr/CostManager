@@ -12,8 +12,8 @@ import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 public class MainFragment extends ListFragment {
 
@@ -47,12 +47,10 @@ public class MainFragment extends ListFragment {
     public MainFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public ListView onCreateView(LayoutInflater inflater, ViewGroup container,
                     Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main,
+        return (ListView) inflater.inflate(R.layout.fragment_main,
                         container, false);
-
-        return rootView;
     }
 
     @Override

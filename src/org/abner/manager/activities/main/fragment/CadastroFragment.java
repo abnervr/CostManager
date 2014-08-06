@@ -10,15 +10,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class CadastroFragment extends MainFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View onCreateView = super.onCreateView(inflater, container, savedInstanceState);
+    public ListView onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final ListView lv = super.onCreateView(inflater, container, savedInstanceState);
         setListAdapter(new MovimentoAdapter(getActivity()));
-        return onCreateView;
+        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Movimento movimento = (Movimento) lv.getItemAtPosition(position);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(MovimentoActivity.ARG_MOVIMENTO_PAI, movimento);
+
+                Intent intent = new Intent(getActivity(), MovimentoActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                return true;
+            }
+        });
+        return lv;
     }
 
     @Override

@@ -68,6 +68,7 @@
     <TextView
        	android:id="@+id/sms_body"
            android:layout_height="wrap_content"
-           android:layout_width="fill_parent"/>
+           android:layout_width="fill_parent"
+           android:layout_margin="10dp"/>
     
 </LinearLayout>
