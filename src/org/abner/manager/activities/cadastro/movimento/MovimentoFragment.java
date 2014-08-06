@@ -213,7 +213,7 @@ public class MovimentoFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
                 if (readOnly) {
-                    builder.setMessage("Não é possível remover esse movimento");
+                    builder.setMessage("Não é possível remover esse movimento pois ele possui movimentos que dependem dele.");
                     builder.setNeutralButton("OK", null);
                 } else {
                     builder.setMessage("Deseja remover o movimento?");
