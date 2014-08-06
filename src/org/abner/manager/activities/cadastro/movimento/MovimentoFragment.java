@@ -112,7 +112,7 @@ public class MovimentoFragment extends Fragment {
 
         CheckBox chkCredito = (CheckBox) rootView.findViewById(R.id.movimento_credito);
         chkCredito.setChecked(movimento.getTipo() == TipoMovimento.CREDITO);
-        chkCredito.setEnabled(!readOnly);
+        chkCredito.setEnabled(!readOnly && movimento.getMovimentoPai() == null);
 
         EditText textValor = (EditText) rootView.findViewById(R.id.movimento_valor);
         textValor.setEnabled(!readOnly);

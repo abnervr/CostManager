@@ -48,6 +48,7 @@ public class MovimentoActivity extends Activity {
             movimento = new Movimento();
             if (intent != null && intent.hasExtra(ARG_MOVIMENTO_PAI)) {
                 movimento.setMovimentoPai((Movimento) intent.getSerializableExtra(ARG_MOVIMENTO_PAI));
+                movimento.setTipo(movimento.getMovimentoPai().getTipo());
             }
         }
 
@@ -97,7 +98,7 @@ public class MovimentoActivity extends Activity {
 
         @Override
         public int getCount() {
-            if (movimento != null && movimento.getId() != null) {
+            if (movimento.getId() != null) {
                 return 2;
             } else {
                 return 1;
