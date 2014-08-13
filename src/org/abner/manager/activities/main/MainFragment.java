@@ -2,12 +2,12 @@ package org.abner.manager.activities.main;
 
 import org.abner.manager.R;
 import org.abner.manager.activities.main.adapter.MainAdapter;
-import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.activities.main.fragment.CadastroFragment;
 import org.abner.manager.activities.main.fragment.GastosFragment;
 import org.abner.manager.activities.main.fragment.RelatorioFragment;
 import org.abner.manager.activities.main.fragment.SmsFragment;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 public class MainFragment extends ListFragment {
 
-    public static Fragment buildFragment(Program program, Grouping grouping) {
+    public static Fragment buildFragment(Program program) {
         Fragment fragment;
         switch (program) {
             case CADASTRO:
@@ -31,7 +31,7 @@ public class MainFragment extends ListFragment {
                 break;
             case GASTOS:
                 Bundle arguments = new Bundle();
-                arguments.putString(GastosFragment.GROUPING_ID, grouping.toString());
+                arguments.putInt(GastosFragment.GROUPING_ID, 2);
 
                 fragment = new GastosFragment();
                 fragment.setArguments(arguments);
@@ -51,6 +51,13 @@ public class MainFragment extends ListFragment {
                     Bundle savedInstanceState) {
         return (ListView) inflater.inflate(R.layout.fragment_main,
                         container, false);
+    }
+
+    public void restoreActionBar(String title) {
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
     }
 
     @Override
