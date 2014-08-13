@@ -2,6 +2,7 @@ package org.abner.manager.activities.main;
 
 import org.abner.manager.R;
 import org.abner.manager.activities.main.adapter.MainAdapter;
+import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.activities.main.fragment.CadastroFragment;
 import org.abner.manager.activities.main.fragment.GastosFragment;
 import org.abner.manager.activities.main.fragment.RelatorioFragment;
@@ -31,7 +32,7 @@ public class MainFragment extends ListFragment {
                 break;
             case GASTOS:
                 Bundle arguments = new Bundle();
-                arguments.putInt(GastosFragment.GROUPING_ID, 2);
+                arguments.putSerializable(GastosFragment.GROUPING_ID, Grouping.MES);
 
                 fragment = new GastosFragment();
                 fragment.setArguments(arguments);

@@ -32,8 +32,10 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments().containsKey(GROUPING_ID)) {
-            grouping = Grouping.values()[getArguments().getInt(GROUPING_ID)];
+        if (savedInstanceState != null) {
+            grouping = (Grouping) savedInstanceState.getSerializable(GROUPING_ID);
+        } else if (getArguments().containsKey(GROUPING_ID)) {
+            grouping = (Grouping) getArguments().getSerializable(GROUPING_ID);
         }
     }
 
@@ -86,9 +88,13 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(GROUPING_ID, grouping);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         grouping = Grouping.values()[itemPosition];
-        getArguments().putInt(GROUPING_ID, itemPosition);
         updateListViewAdapter(null);
         return true;
     }

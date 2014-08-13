@@ -48,6 +48,10 @@ public class MainActivity extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (mNavigationDrawerFragment.isDrawerOpen()) {
+            menu.clear();
+            return true;
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
