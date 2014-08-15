@@ -32,9 +32,7 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (savedInstanceState != null) {
-            grouping = (Grouping) savedInstanceState.getSerializable(GROUPING_ID);
-        } else if (getArguments().containsKey(GROUPING_ID)) {
+        if (getArguments().containsKey(GROUPING_ID)) {
             grouping = (Grouping) getArguments().getSerializable(GROUPING_ID);
         }
     }
@@ -65,7 +63,18 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
         actionBar.setListNavigationCallbacks(gastosSpinnerAdapter, this);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setTitle("Gastos");
-        actionBar.setSelectedNavigationItem(2);
+        actionBar.setSelectedNavigationItem(getNavigationIndex());
+    }
+
+    private int getNavigationIndex() {
+        Grouping[] values = Grouping.values();
+        for (int i = 0; i < values.length; i++) {
+            Grouping grouping = values[i];
+            if (grouping == this.grouping) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -85,11 +94,6 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
         List<Gasto> gastos = new GastosDataProvider(getActivity()).find(grouping);
         expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
         expandableListView.setGroupIndicator(null);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(GROUPING_ID, grouping);
     }
 
     @Override

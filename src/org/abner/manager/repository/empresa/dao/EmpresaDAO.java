@@ -1,10 +1,10 @@
 package org.abner.manager.repository.empresa.dao;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.abner.manager.model.empresa.Empresa;
+import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.repository.GenericDAO;
 import org.abner.manager.repository.empresa.EmpresaRepository;
@@ -22,10 +22,10 @@ public class EmpresaDAO extends GenericDAO<Empresa> implements EmpresaRepository
         super(context);
     }
 
-    public List<Empresa> findOrderingByUse(Date date, TipoMovimento tipo) {
+    public List<Empresa> findOrderingByUse(Movimento movimento) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return findOrderingByUse(calendar, tipo);
+        calendar.setTime(movimento.getData());
+        return findOrderingByUse(calendar, movimento.getTipo());
     }
 
     public List<Empresa> findOrderingByUse(Calendar calendar, TipoMovimento tipo) {

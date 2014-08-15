@@ -29,7 +29,7 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             Movimento movimento = (Movimento) getArguments().getSerializable("movimento");
-            empresas = new EmpresaDAO(getActivity()).findOrderingByUse(movimento.getData(), movimento.getTipo());
+            empresas = new EmpresaDAO(getActivity()).findOrderingByUse(movimento);
             empresa = movimento.getEmpresa();
         }
     }
