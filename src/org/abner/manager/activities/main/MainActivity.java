@@ -38,10 +38,15 @@ public class MainActivity extends Activity
     public void onNavigationDrawerItemSelected(int position) {
         Program program = Program.values()[position];
 
-        Fragment fragment = MainFragment.buildFragment(program);
+        Fragment fragment;
+
+        fragment = getFragmentManager().findFragmentByTag(program.toString());
+        if (fragment == null) {
+            fragment = MainFragment.buildFragment(program);
+        }
 
         getFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragment).commit();
+                        .replace(R.id.container, fragment, program.toString()).commit();
     }
 
     public void onSectionAttached(int number) {}
