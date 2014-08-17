@@ -1,7 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/action_gasto_empresas"
-          android:title="@string/empresa"/>
-    
-    <item android:id="@+id/action_gasto_tipos"
-          android:title="@string/tipos"/>
+
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/action_gasto_empresas"
+            android:title="@string/empresa"/>
+        <item
+            android:id="@+id/action_gasto_tipos"
+            android:checked="true"
+            android:title="@string/tipos"/>
+    </group>
+
 </menu>

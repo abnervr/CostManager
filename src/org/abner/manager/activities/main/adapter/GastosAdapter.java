@@ -92,10 +92,18 @@ public class GastosAdapter extends BaseExpandableListAdapter {
         Gasto gasto = getChild(groupPosition, childPosition);
 
         TextView view = (TextView) convertView.findViewById(R.id.gastos_child_group);
-        view.setText(gasto.getEmpresa());
+        if (gasto.getEmpresa() != null) {
+            view.setText(gasto.getEmpresa());
+        } else {
+            view.setVisibility(View.GONE);
+        }
 
         view = (TextView) convertView.findViewById(R.id.gastos_child_type);
-        view.setText(gasto.getTipo());
+        if (gasto.getTipo() == null) {
+            view.setText("Tipo não especificado");
+        } else {
+            view.setText(gasto.getTipo());
+        }
 
         NumberFormat format = NumberFormat.getCurrencyInstance();
 

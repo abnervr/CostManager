@@ -8,19 +8,18 @@ public enum Grouping {
 
     private String format;
     private String title;
-    private GroupingFormat groupingFormat;
 
     private Grouping(String format, String title) {
         this.format = format;
         this.title = title;
-        this.groupingFormat = GroupingFormat.getGroupingInstance(this);
     }
 
     public String format(String value) {
+        GroupingFormat groupingFormat = GroupingFormat.getGroupingInstance(this);
         if (groupingFormat != null) {
-            return value;
-        } else {
             return groupingFormat.format(value);
+        } else {
+            return value;
         }
     }
 

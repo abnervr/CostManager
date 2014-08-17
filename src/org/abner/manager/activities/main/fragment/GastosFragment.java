@@ -28,6 +28,7 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
     public static final String GROUPING_ID = "grouping_id";
 
     private Grouping grouping;
+    private boolean empresa;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,14 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_gasto_empresas:
-                //updateFragment(Grouping.ANO);
+                empresa = true;
+                item.setChecked(true);
+                updateListViewAdapter();
                 return true;
             case R.id.action_gasto_tipos:
-                //updateFragment(Grouping.DIA);
+                empresa = false;
+                item.setChecked(true);
+                updateListViewAdapter();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -107,20 +112,29 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
         return view;
     }
 
-    private void updateListViewAdapter(ExpandableListView expandableListView) {
-        if (expandableListView == null) {
-            expandableListView = (ExpandableListView) getActivity().findViewById(android.R.id.list);
-        }
+    private void updateListViewAdapter() {
+        updateListViewAdapter((ExpandableListView) getActivity().findViewById(android.R.id.list));
+    }
 
-        List<Gasto> gastos = new GastosDataProvider(getActivity()).findByEmpresa(grouping);
+    private void updateListViewAdapter(ExpandableListView expandableListView) {
+        List<Gasto> gastos = getGastos();
         expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
         expandableListView.setGroupIndicator(null);
+    }
+
+    private List<Gasto> getGastos() {
+        GastosDataProvider gastosDataProvider = new GastosDataProvider(getActivity());
+        if (empresa) {
+            return gastosDataProvider.findByEmpresa(grouping);
+        } else {
+            return gastosDataProvider.findByTipo(grouping);
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         grouping = Grouping.values()[itemPosition];
-        updateListViewAdapter(null);
+        updateListViewAdapter();
         return true;
     }
 
