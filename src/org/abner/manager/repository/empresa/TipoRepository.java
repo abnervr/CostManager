@@ -5,5 +5,5 @@ import org.abner.manager.repository.Repository;
 
 public interface TipoRepository extends Repository<Tipo> {
 
-    Tipo findByDescricao(String nome);
+    Tipo findByDescricao(String descricao);
 }

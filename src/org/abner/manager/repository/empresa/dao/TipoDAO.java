@@ -19,6 +19,9 @@ public class TipoDAO extends GenericDAO<Tipo> implements TipoRepository {
     public Tipo findByDescricao(String descricao) {
         List<Tipo> items = findWhere("upper(descricao) = '" + descricao.toUpperCase(Locale.US) + "'");
         if (items.isEmpty()) {
+            items = findWhere("descricao = '" + descricao + "'");
+        }
+        if (items.isEmpty()) {
             return null;
         } else {
             return items.get(0);
