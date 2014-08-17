@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 public class GastosFragment extends Fragment implements OnNavigationListener {
 
@@ -57,13 +58,33 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-        SpinnerAdapter gastosSpinnerAdapter = new ArrayAdapter<Grouping>(getActivity(),
+        SpinnerAdapter gastosSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_spinner_dropdown_item,
-                        Grouping.values());
+                        getGroupingTitles()) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView) super.getView(position, convertView, parent);
+                int color = getResources().getColor(android.R.color.white);
+                view.setTextColor(color);
+                return view;
+            }
+        };
         actionBar.setListNavigationCallbacks(gastosSpinnerAdapter, this);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setTitle("Gastos");
         actionBar.setSelectedNavigationItem(getNavigationIndex());
+    }
+
+    private String[] getGroupingTitles() {
+        Grouping[] values = Grouping.values();
+        String[] titles = new String[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            titles[i] = values[i].getTitle();
+        }
+
+        return titles;
     }
 
     private int getNavigationIndex() {
@@ -91,7 +112,7 @@ public class GastosFragment extends Fragment implements OnNavigationListener {
             expandableListView = (ExpandableListView) getActivity().findViewById(android.R.id.list);
         }
 
-        List<Gasto> gastos = new GastosDataProvider(getActivity()).find(grouping);
+        List<Gasto> gastos = new GastosDataProvider(getActivity()).findByEmpresa(grouping);
         expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
         expandableListView.setGroupIndicator(null);
     }
