@@ -34,7 +34,7 @@ public class SmsReader extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        readNew();
+        //readNew();
     }
 
     public Set<String> getSmsNumbers() {
