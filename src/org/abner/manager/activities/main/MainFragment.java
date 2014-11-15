@@ -1,10 +1,10 @@
 package org.abner.manager.activities.main;
 
 import org.abner.manager.R;
-import org.abner.manager.activities.main.adapter.MainAdapter;
+import org.abner.manager.activities.main.adapter.RefreshableAdapter;
 import org.abner.manager.activities.main.adapter.gastos.Grouping;
-import org.abner.manager.activities.main.fragment.CadastroFragment;
 import org.abner.manager.activities.main.fragment.GastosFragment;
+import org.abner.manager.activities.main.fragment.GastosPeriodoFragment;
 import org.abner.manager.activities.main.fragment.RelatorioFragment;
 import org.abner.manager.activities.main.fragment.SmsFragment;
 
@@ -21,8 +21,8 @@ public class MainFragment extends ListFragment {
     public static Fragment buildFragment(Program program) {
         Fragment fragment;
         switch (program) {
-            case CADASTRO:
-                fragment = new CadastroFragment();
+            case GASTOS:
+                fragment = new GastosFragment();
                 break;
             case RELATORIOS:
                 fragment = new RelatorioFragment();
@@ -30,11 +30,11 @@ public class MainFragment extends ListFragment {
             case SMS:
                 fragment = new SmsFragment();
                 break;
-            case GASTOS:
+            case GASTOS_PERIODO:
                 Bundle arguments = new Bundle();
-                arguments.putSerializable(GastosFragment.GROUPING_ID, Grouping.MES);
+                arguments.putSerializable(GastosPeriodoFragment.GROUPING_ID, Grouping.MES);
 
-                fragment = new GastosFragment();
+                fragment = new GastosPeriodoFragment();
                 fragment.setArguments(arguments);
                 break;
             default:
@@ -64,8 +64,8 @@ public class MainFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (getListAdapter() instanceof MainAdapter) {
-            ((MainAdapter) getListAdapter()).update();
+        if (getListAdapter() instanceof RefreshableAdapter) {
+            ((RefreshableAdapter) getListAdapter()).refresh();
         }
     }
 }

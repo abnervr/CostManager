@@ -1,8 +1,8 @@
 package org.abner.manager.activities.main;
 
 public enum Program {
-    CADASTRO("Cadastro"),
     GASTOS("Gastos"),
+    GASTOS_PERIODO("Gastos no Período"),
     SMS("Sms"),
     RELATORIOS("Relatórios");
 

@@ -1,141 +1,97 @@
 package org.abner.manager.activities.main.fragment;
 
-import java.util.List;
-
 import org.abner.manager.R;
-import org.abner.manager.activities.main.adapter.GastosAdapter;
-import org.abner.manager.activities.main.adapter.gastos.Grouping;
-import org.abner.manager.model.views.Gasto;
-import org.abner.manager.repository.views.GastosDataProvider;
+import org.abner.manager.activities.cadastro.empresa.EmpresaActivity;
+import org.abner.manager.activities.cadastro.movimento.MovimentoActivity;
+import org.abner.manager.activities.cadastro.tipo.TipoActivity;
+import org.abner.manager.activities.main.MainFragment;
+import org.abner.manager.activities.main.adapter.MovimentoAdapter;
+import org.abner.manager.model.movimento.Movimento;
 
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class GastosFragment extends Fragment implements OnNavigationListener {
-
-    public static final String GROUPING_ID = "grouping_id";
-
-    private Grouping grouping;
-    private boolean empresa;
+public class GastosFragment extends MainFragment implements OnRefreshListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments().containsKey(GROUPING_ID)) {
-            grouping = (Grouping) getArguments().getSerializable(GROUPING_ID);
-        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.cadastro, menu);
+        restoreActionBar("Cadastro");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_gasto_empresas:
-                empresa = true;
-                item.setChecked(true);
-                updateListViewAdapter();
+            case R.id.action_adicionar:
+                Intent intent = new Intent(getActivity(), MovimentoActivity.class);
+                startActivity(intent);
                 return true;
-            case R.id.action_gasto_tipos:
-                empresa = false;
-                item.setChecked(true);
-                updateListViewAdapter();
+            case R.id.action_empresas:
+                intent = new Intent(getActivity(), EmpresaActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_tipos:
+                intent = new Intent(getActivity(), TipoActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.gastos, menu);
-
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
-        SpinnerAdapter gastosSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        getGroupingTitles()) {
+    public ListView onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final ListView lv = super.onCreateView(inflater, container, savedInstanceState);
+        setListAdapter(new MovimentoAdapter(getActivity()));
+        lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                TextView view = (TextView) super.getView(position, convertView, parent);
-                int color = getResources().getColor(android.R.color.white);
-                view.setTextColor(color);
-                return view;
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Movimento movimento = (Movimento) lv.getItemAtPosition(position);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(MovimentoActivity.ARG_MOVIMENTO_PAI, movimento);
+
+                Intent intent = new Intent(getActivity(), MovimentoActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                return true;
             }
-        };
-        actionBar.setListNavigationCallbacks(gastosSpinnerAdapter, this);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setTitle("Gastos");
-        actionBar.setSelectedNavigationItem(getNavigationIndex());
-    }
-
-    private String[] getGroupingTitles() {
-        Grouping[] values = Grouping.values();
-        String[] titles = new String[values.length];
-
-        for (int i = 0; i < values.length; i++) {
-            titles[i] = values[i].getTitle();
-        }
-
-        return titles;
-    }
-
-    private int getNavigationIndex() {
-        Grouping[] values = Grouping.values();
-        for (int i = 0; i < values.length; i++) {
-            Grouping grouping = values[i];
-            if (grouping == this.grouping) {
-                return i;
-            }
-        }
-        return -1;
+        });
+        return lv;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gastos, container, false);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Movimento movimento = (Movimento) l.getItemAtPosition(position);
 
-        updateListViewAdapter((ExpandableListView) view.findViewById(android.R.id.list));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MovimentoActivity.ARG_MOVIMENTO, movimento);
 
-        return view;
-    }
-
-    private void updateListViewAdapter() {
-        updateListViewAdapter((ExpandableListView) getActivity().findViewById(android.R.id.list));
-    }
-
-    private void updateListViewAdapter(ExpandableListView expandableListView) {
-        List<Gasto> gastos = getGastos();
-        expandableListView.setAdapter(new GastosAdapter(getActivity(), gastos));
-        expandableListView.setGroupIndicator(null);
-    }
-
-    private List<Gasto> getGastos() {
-        GastosDataProvider gastosDataProvider = new GastosDataProvider(getActivity());
-        if (empresa) {
-            return gastosDataProvider.findByEmpresa(grouping);
-        } else {
-            return gastosDataProvider.findByTipo(grouping);
-        }
+        Intent intent = new Intent(getActivity(), MovimentoActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        grouping = Grouping.values()[itemPosition];
-        updateListViewAdapter();
-        return true;
+    public void onRefresh() {
+        Toast.makeText(getActivity(), "Refreshing", Toast.LENGTH_LONG).show();
     }
-
 }

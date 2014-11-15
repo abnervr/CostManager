@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class GastosAdapter extends BaseExpandableListAdapter {
+public class GastosPeriodoAdapter extends BaseExpandableListAdapter {
 
     private final LayoutInflater inflater;
     private final List<Gasto> gastos;
 
-    public GastosAdapter(Activity context, List<Gasto> gastos) {
+    public GastosPeriodoAdapter(Activity context, List<Gasto> gastos) {
         this.inflater = context.getLayoutInflater();
         this.gastos = gastos;
     }

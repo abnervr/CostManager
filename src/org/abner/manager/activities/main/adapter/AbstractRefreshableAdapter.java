@@ -6,14 +6,14 @@ import java.util.List;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-public abstract class AbstractMainAdapter<T> extends ArrayAdapter<T> implements MainAdapter {
+public abstract class AbstractRefreshableAdapter<T> extends ArrayAdapter<T> implements RefreshableAdapter {
 
-    public AbstractMainAdapter(Context context) {
+    public AbstractRefreshableAdapter(Context context) {
         super(context, android.R.id.list, new ArrayList<T>());
     }
 
     @Override
-    public void update() {
+    public void refresh() {
         clear();
         addAll(getItems());
     }
