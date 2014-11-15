@@ -21,4 +21,10 @@ public class RelatorioFragment extends MainFragment {
         restoreActionBar("Relatórios");
     }
 
+    @Override
+    public void onRefresh() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

@@ -4,36 +4,53 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 
 public class SmsReadTask extends AsyncTask<Object, Void, String> {
+
+    public interface OnFinishListener {
+
+        void onFinish();
+
+    }
 
     private final Context context;
 
     private ProgressDialog progressDialog;
-    private Handler handler;
+    //private Handler handler;
+
+    private final OnFinishListener listener;
+
+    public SmsReadTask(Context context, OnFinishListener listener) {
+        this.context = context;
+        if (listener == null && context instanceof OnFinishListener) {
+            this.listener = (OnFinishListener) context;
+        } else {
+            this.listener = listener;
+        }
+    }
 
     public SmsReadTask(Context context) {
-        this.context = context;
+        this(context, null);
     }
 
     @Override
     protected void onPreExecute() {
-        handler = new Handler(new Handler.Callback() {
+        if (listener == null) {
+            /*handler = new Handler(new Handler.Callback() {
 
-            @Override
-            public boolean handleMessage(Message msg) {
-                progressDialog.setMessage(msg.getData().getString("MESSAGE"));
-                return true;
-            }
-        });
+                @Override
+                public boolean handleMessage(Message msg) {
+                    progressDialog.setMessage(msg.getData().getString("MESSAGE"));
+                    return true;
+                }
+            });*/
 
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("Sincronizando...");
-        progressDialog.setMessage("Aguarde");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Sincronizando...");
+            progressDialog.setMessage("Aguarde");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
         super.onPreExecute();
     }
 
@@ -59,6 +76,8 @@ public class SmsReadTask extends AsyncTask<Object, Void, String> {
                 builder.setMessage(result);
             }
             builder.show();
+        } else if (listener != null) {
+            listener.onFinish();
         }
     }
 

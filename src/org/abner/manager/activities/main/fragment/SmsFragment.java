@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class SmsFragment extends MainFragment {
@@ -55,9 +55,15 @@ public class SmsFragment extends MainFragment {
     }
 
     @Override
-    public ListView onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ListView onCreateView = super.onCreateView(inflater, container, savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         setListAdapter(new SmsAdapter(getActivity()));
-        return onCreateView;
+        return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        // TODO Auto-generated method stub
+
     }
 }

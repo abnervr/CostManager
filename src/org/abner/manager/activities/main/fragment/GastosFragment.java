@@ -10,7 +10,6 @@ import org.abner.manager.model.movimento.Movimento;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
-public class GastosFragment extends MainFragment implements OnRefreshListener {
+public class GastosFragment extends MainFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +54,11 @@ public class GastosFragment extends MainFragment implements OnRefreshListener {
     }
 
     @Override
-    public ListView onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ListView lv = super.onCreateView(inflater, container, savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         setListAdapter(new MovimentoAdapter(getActivity()));
+
+        final ListView lv = ((ListView) view.findViewById(android.R.id.list));
         lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
             @Override
@@ -75,7 +75,8 @@ public class GastosFragment extends MainFragment implements OnRefreshListener {
                 return true;
             }
         });
-        return lv;
+
+        return view;
     }
 
     @Override
@@ -90,8 +91,4 @@ public class GastosFragment extends MainFragment implements OnRefreshListener {
         startActivity(intent);
     }
 
-    @Override
-    public void onRefresh() {
-        Toast.makeText(getActivity(), "Refreshing", Toast.LENGTH_LONG).show();
-    }
 }

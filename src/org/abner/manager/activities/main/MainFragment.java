@@ -1,6 +1,8 @@
 package org.abner.manager.activities.main;
 
 import org.abner.manager.R;
+import org.abner.manager.SmsReadTask;
+import org.abner.manager.SmsReadTask.OnFinishListener;
 import org.abner.manager.activities.main.adapter.RefreshableAdapter;
 import org.abner.manager.activities.main.adapter.gastos.Grouping;
 import org.abner.manager.activities.main.fragment.GastosFragment;
@@ -12,11 +14,13 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-public class MainFragment extends ListFragment {
+public abstract class MainFragment extends ListFragment implements OnRefreshListener, OnFinishListener {
 
     public static Fragment buildFragment(Program program) {
         Fragment fragment;
@@ -38,8 +42,7 @@ public class MainFragment extends ListFragment {
                 fragment.setArguments(arguments);
                 break;
             default:
-                fragment = new MainFragment();
-                break;
+                return null;
         }
 
         return fragment;
@@ -48,10 +51,15 @@ public class MainFragment extends ListFragment {
     public MainFragment() {}
 
     @Override
-    public ListView onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                     Bundle savedInstanceState) {
-        return (ListView) inflater.inflate(R.layout.fragment_main,
+        View view = inflater.inflate(R.layout.fragment_main,
                         container, false);
+        if (view instanceof SwipeRefreshLayout) {
+            SwipeRefreshLayout srf = (SwipeRefreshLayout) view;
+            srf.setOnRefreshListener(this);
+        }
+        return view;
     }
 
     public void restoreActionBar(String title) {
@@ -64,8 +72,27 @@ public class MainFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        refreshList();
+    }
+
+    private void refreshList() {
         if (getListAdapter() instanceof RefreshableAdapter) {
             ((RefreshableAdapter) getListAdapter()).refresh();
         }
     }
+
+    @Override
+    public void onRefresh() {
+        SmsReadTask task = new SmsReadTask(getActivity(), this);
+        task.execute();
+    }
+
+    @Override
+    public void onFinish() {
+        refreshList();
+
+        SwipeRefreshLayout swipe = (SwipeRefreshLayout) getActivity().findViewById(R.id.swiperefresh);
+        swipe.setRefreshing(false);
+    }
+
 }
