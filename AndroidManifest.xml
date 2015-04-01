@@ -35,12 +35,6 @@
             android:label="@string/tipos" >
         </activity>
         
-        <receiver android:name=".SmsReader" >
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".activities.main.MainActivity"
             android:label="@string/title_activity_main" >

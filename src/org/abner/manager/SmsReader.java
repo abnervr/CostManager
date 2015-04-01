@@ -12,14 +12,12 @@ import org.abner.manager.model.sms.Sms;
 import org.abner.manager.repository.sms.SmsRepository;
 import org.abner.manager.repository.sms.dao.SmsDao;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-public class SmsReader extends BroadcastReceiver {
+public class SmsReader {
 
     public static String ADDRESS = "address";
     public static String BODY = "body";
@@ -30,11 +28,6 @@ public class SmsReader extends BroadcastReceiver {
 
     public SmsReader(Context context) {
         this.context = context;
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        //readNew();
     }
 
     public Set<String> getSmsNumbers() {
