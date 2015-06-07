@@ -23,6 +23,11 @@ public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository
         super(context);
     }
 
+    @Override
+    public List<Empresa> find() {
+        return super.find("select * from Empresa e order by nome");
+    }
+
     public List<Empresa> findOrderingByUse(Movimento movimento) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(movimento.getData());
