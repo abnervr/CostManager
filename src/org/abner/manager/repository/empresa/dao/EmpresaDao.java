@@ -87,7 +87,7 @@ public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository
                 return empresas.get(0);
             } else if (empresas.size() == 0) {
                 Empresa empresa = new Empresa();
-                empresa.setNome(identificador);
+                empresa.setNome(identificador.trim());
                 empresa.setIdentificador(identificador);
                 insert(empresa);
                 return empresa;
