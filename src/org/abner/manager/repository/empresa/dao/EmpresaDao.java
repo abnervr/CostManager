@@ -76,7 +76,7 @@ public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository
     public Empresa findByIdentificador(String body) {
         String identificador = getIdentificador(body);
         if (identificador != null) {
-            String where = "identificador = " + identificador;
+            String where = "identificador = '" + identificador + "'";
             List<Empresa> empresas = findWhere(where);
             if (empresas.size() == 1) {
                 return empresas.get(0);
@@ -85,6 +85,7 @@ public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository
                 empresa.setNome(identificador);
                 empresa.setIdentificador(identificador);
                 insert(empresa);
+                return empresa;
             }
         }
         return null;
