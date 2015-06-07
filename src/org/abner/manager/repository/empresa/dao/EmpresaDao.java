@@ -93,9 +93,9 @@ public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository
     private String getIdentificador(String body) {
         String storeStart = Settings.getStoreStart();
         if (!storeStart.trim().isEmpty()) {
-            int start = body.indexOf(storeStart) + storeStart.length();
-            if (start < body.length()) {
-                String identificador = body.substring(start);
+            int start = body.indexOf(storeStart);
+            if (start != -1 && start + storeStart.length() < body.length()) {
+                String identificador = body.substring(start + storeStart.length());
                 String storeEnd = Settings.getStoreEnd();
                 if (!storeEnd.trim().isEmpty() && identificador.indexOf(storeEnd) != -1) {
                     identificador = identificador.substring(0, identificador.indexOf(storeEnd));
