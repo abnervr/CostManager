@@ -6,6 +6,8 @@ import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
 import org.abner.manager.model.sms.Sms;
 import org.abner.manager.repository.GenericDAO;
+import org.abner.manager.repository.empresa.EmpresaRepository;
+import org.abner.manager.repository.empresa.dao.EmpresaDao;
 import org.abner.manager.repository.movimento.MovimentoRepository;
 import org.abner.manager.repository.movimento.dao.MovimentoDao;
 import org.abner.manager.repository.sms.SmsRepository;
@@ -15,10 +17,12 @@ import android.content.Context;
 public class SmsDao extends GenericDAO<Sms> implements SmsRepository {
 
     private final MovimentoRepository movimentoRepository;
+    private final EmpresaRepository empresaRepository;
 
     public SmsDao(Context context) {
         super(context);
         this.movimentoRepository = new MovimentoDao(context);
+        this.empresaRepository = new EmpresaDao(context);
     }
 
     @Override
@@ -32,6 +36,7 @@ public class SmsDao extends GenericDAO<Sms> implements SmsRepository {
                 movimento.setTipo(TipoMovimento.CREDITO);
             }
             movimento.setValor(sms.findValue());
+            movimento.setEmpresa(empresaRepository.findByIdentificador(sms.getBody()));
             if (movimentoRepository.insert(movimento) > 0) {
                 sms.setMovimento(movimento);
             }

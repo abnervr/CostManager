@@ -3,7 +3,7 @@ package org.abner.manager.activities.cadastro.empresa;
 import org.abner.manager.R;
 import org.abner.manager.activities.cadastro.common.EmpresaFragment;
 import org.abner.manager.model.empresa.Empresa;
-import org.abner.manager.repository.empresa.dao.EmpresaDAO;
+import org.abner.manager.repository.empresa.dao.EmpresaDao;
 
 import android.app.DialogFragment;
 import android.app.ListActivity;
@@ -18,7 +18,7 @@ public class EmpresaActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empresa);
 
-        setListAdapter(new EmpresaAdapter(this, new EmpresaDAO(this).find()));
+        setListAdapter(new EmpresaAdapter(this, new EmpresaDao(this).find()));
     }
 
     @Override

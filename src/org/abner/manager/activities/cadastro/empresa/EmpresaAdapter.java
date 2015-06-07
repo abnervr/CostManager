@@ -28,9 +28,13 @@ public class EmpresaAdapter extends ArrayAdapter<Empresa> {
         }
 
         Empresa item = getItem(position);
+        String name = item.getNome();
+        if (item.getIdentificador() != null) {
+            name += " (" + item.getIdentificador() + ")";
+        }
 
         TextView textView = (TextView) convertView.findViewById(R.id.name);
-        textView.setText(item.getNome());
+        textView.setText(name);
 
         textView = (TextView) convertView.findViewById(R.id.subname);
         if (item.getTipo() != null) {

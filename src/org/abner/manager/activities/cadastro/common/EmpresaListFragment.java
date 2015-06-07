@@ -7,7 +7,7 @@ import org.abner.manager.activities.cadastro.common.EmpresaFragment.OnEmpresaCre
 import org.abner.manager.activities.cadastro.movimento.adapter.EmpresaAdapter;
 import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.model.movimento.Movimento;
-import org.abner.manager.repository.empresa.dao.EmpresaDAO;
+import org.abner.manager.repository.empresa.dao.EmpresaDao;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,7 +29,7 @@ public class EmpresaListFragment extends DialogFragment implements OnEmpresaCrea
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             Movimento movimento = (Movimento) getArguments().getSerializable("movimento");
-            empresas = new EmpresaDAO(getActivity()).findOrderingByUse(movimento);
+            empresas = new EmpresaDao(getActivity()).findOrderingByUse(movimento);
             empresa = movimento.getEmpresa();
         }
     }

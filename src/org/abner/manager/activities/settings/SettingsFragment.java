@@ -43,6 +43,12 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 
         preference = findPreference(Settings.SMS_IGNORE_IDENTIFIER);
         preference.setSummary(Settings.getIgnoreIdentifier());
+
+        preference = findPreference(Settings.SMS_STORE_START);
+        preference.setSummary(Settings.getStoreStart());
+
+        preference = findPreference(Settings.SMS_STORE_END);
+        preference.setSummary(Settings.getStoreEnd());
     }
 
     @Override

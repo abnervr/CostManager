@@ -13,6 +13,8 @@ import org.abner.manager.model.movimento.Movimento;
 
 public class Sms extends AbstractModel {
 
+    private static final long serialVersionUID = -3167881552240918565L;
+
     private Movimento movimento;
 
     private Date dateSent;

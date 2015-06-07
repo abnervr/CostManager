@@ -7,7 +7,7 @@ import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.model.empresa.Tipo;
 import org.abner.manager.repository.empresa.EmpresaRepository;
 import org.abner.manager.repository.empresa.TipoRepository;
-import org.abner.manager.repository.empresa.dao.EmpresaDAO;
+import org.abner.manager.repository.empresa.dao.EmpresaDao;
 import org.abner.manager.repository.empresa.dao.TipoDAO;
 
 import android.app.AlertDialog;
@@ -83,7 +83,7 @@ public class EmpresaFragment extends DialogFragment {
 
                                     empresa.setNome(nome);
                                     empresa.setTipo(tipo);
-                                    EmpresaRepository empresaRepository = new EmpresaDAO(getActivity());
+                                    EmpresaRepository empresaRepository = new EmpresaDao(getActivity());
                                     if (empresa.getId() == null) {
                                         empresaRepository.insert(empresa);
                                     } else {

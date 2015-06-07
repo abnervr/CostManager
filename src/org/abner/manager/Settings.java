@@ -13,6 +13,8 @@ public class Settings {
     public static final String SMS_CREDIT_IDENTIFIER = "sms_credit_identifier";
     public static final String SMS_DEBIT_IDENTIFIER = "sms_debit_identifier";
     public static final String SMS_IGNORE_IDENTIFIER = "sms_ignore_identifier";
+    public static final String SMS_STORE_START = "sms_store_start";
+    public static final String SMS_STORE_END = "sms_store_end";
 
     private static SharedPreferences preferences;
 
@@ -40,4 +42,11 @@ public class Settings {
         return preferences.getString(SMS_IGNORE_IDENTIFIER, "").toLowerCase(Locale.US);
     }
 
+    public static String getStoreStart() {
+        return preferences.getString(SMS_STORE_START, "").toLowerCase(Locale.US);
+    }
+
+    public static String getStoreEnd() {
+        return preferences.getString(SMS_STORE_END, "").toLowerCase(Locale.US);
+    }
 }

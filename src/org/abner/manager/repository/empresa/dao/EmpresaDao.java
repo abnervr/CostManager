@@ -3,6 +3,7 @@ package org.abner.manager.repository.empresa.dao;
 import java.util.Calendar;
 import java.util.List;
 
+import org.abner.manager.Settings;
 import org.abner.manager.model.empresa.Empresa;
 import org.abner.manager.model.movimento.Movimento;
 import org.abner.manager.model.movimento.TipoMovimento;
@@ -11,14 +12,14 @@ import org.abner.manager.repository.empresa.EmpresaRepository;
 
 import android.content.Context;
 
-public class EmpresaDAO extends GenericDAO<Empresa> implements EmpresaRepository {
+public class EmpresaDao extends GenericDAO<Empresa> implements EmpresaRepository {
 
     private static final int SAME_HOUR_SCORE = 3;
     private static final int NEXT_HOUR_SCORE = 2;
 
     private static final int SAME_TYPE_SCORE = 1;
 
-    public EmpresaDAO(Context context) {
+    public EmpresaDao(Context context) {
         super(context);
     }
 
@@ -71,4 +72,37 @@ public class EmpresaDAO extends GenericDAO<Empresa> implements EmpresaRepository
         return "case when " + condition + " then " + score + " else 0 end";
     }
 
+    @Override
+    public Empresa findByIdentificador(String body) {
+        String identificador = getIdentificador(body);
+        if (identificador != null) {
+            String where = "identificador = " + identificador;
+            List<Empresa> empresas = findWhere(where);
+            if (empresas.size() == 1) {
+                return empresas.get(0);
+            } else if (empresas.size() == 0) {
+                Empresa empresa = new Empresa();
+                empresa.setNome(identificador);
+                empresa.setIdentificador(identificador);
+                insert(empresa);
+            }
+        }
+        return null;
+    }
+
+    private String getIdentificador(String body) {
+        String storeStart = Settings.getStoreStart();
+        if (!storeStart.trim().isEmpty()) {
+            int start = body.indexOf(storeStart) + storeStart.length();
+            if (start < body.length()) {
+                String identificador = body.substring(start);
+                String storeEnd = Settings.getStoreEnd();
+                if (!storeEnd.trim().isEmpty() && identificador.indexOf(storeEnd) != -1) {
+                    identificador = identificador.substring(0, identificador.indexOf(storeEnd));
+                }
+                return identificador;
+            }
+        }
+        return null;
+    }
 }

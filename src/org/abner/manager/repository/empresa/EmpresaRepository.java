@@ -5,4 +5,6 @@ import org.abner.manager.repository.Repository;
 
 public interface EmpresaRepository extends Repository<Empresa> {
 
+    Empresa findByIdentificador(String body);
+
 }

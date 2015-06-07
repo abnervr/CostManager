@@ -30,7 +30,7 @@ import android.util.Log;
 class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "CostManager";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private final Class<?>[] models = {
                     Empresa.class, Estabelecimento.class, Telefone.class, Tipo.class,

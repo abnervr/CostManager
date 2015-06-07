@@ -9,6 +9,8 @@ public class Empresa extends AbstractModel {
 
     private String nome;
 
+    private String identificador;
+
     public Tipo getTipo() {
         return tipo;
     }
@@ -23,6 +25,14 @@ public class Empresa extends AbstractModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 
 }

@@ -113,49 +113,16 @@ public class SmsReader {
             return "Configure corretamente o monitoramento de SMS.";
         }
 
-        return readSms(cursor);
+        return readSmsCursor(cursor);
     }
 
-    private String readSms(Cursor cursor) {
+    private String readSmsCursor(Cursor cursor) {
         SmsRepository smsRepository = new SmsDao(context);
         try {
             int count = 0;
             if (cursor.moveToFirst()) {
                 do {
-                    int index = cursor.getColumnIndex("address");
-                    String address = cursor.getString(index);
-
-                    index = cursor.getColumnIndex("body");
-                    String body = cursor.getString(index);
-
-                    index = cursor.getColumnIndex("service_center");
-                    String serviceCenter = cursor.getString(index);
-
-                    index = cursor.getColumnIndex("date_sent");
-                    Date dateSent = new Date(cursor.getLong(index));
-
-                    Sms sms = new Sms();
-                    sms.setAddress(address);
-                    sms.setBody(body);
-                    sms.setDateSent(dateSent);
-                    sms.setServiceCenter(serviceCenter);
-                    if (body != null) {
-
-                        boolean containsIgnore = containsIgnore(body);
-                        if (containsIgnore) {
-                            sms.setDebito(null);
-                        } else {
-                            boolean containsCredit = containsCredit(body);
-                            boolean containsDebit = containsDebit(body);
-                            if (containsCredit && !containsDebit) {
-                                sms.setDebito(false);
-                            } else if (!containsCredit && containsDebit) {
-                                sms.setDebito(true);
-                            } else if (containsCredit && containsDebit) {
-                                Log.w("sms", "No identifier found: " + body);
-                            }
-                        }
-                    }
+                    Sms sms = readSms(cursor);
                     smsRepository.insert(sms);
                     count++;
                 } while (cursor.moveToNext());
@@ -168,6 +135,36 @@ public class SmsReader {
         } finally {
             cursor.close();
         }
+    }
+
+    private Sms readSms(Cursor cursor) {
+        String address = cursor.getString(cursor.getColumnIndex("address"));
+        String body = cursor.getString(cursor.getColumnIndex("body"));
+        String serviceCenter = cursor.getString(cursor.getColumnIndex("service_center"));
+        Date dateSent = new Date(cursor.getLong(cursor.getColumnIndex("date_sent")));
+
+        Sms sms = new Sms();
+        sms.setAddress(address);
+        sms.setBody(body);
+        sms.setDateSent(dateSent);
+        sms.setServiceCenter(serviceCenter);
+        if (body != null) {
+            if (containsIgnore(body)) {
+                //Ignorando SMS
+                sms.setDebito(null);
+            } else {
+                boolean containsCredit = containsCredit(body);
+                boolean containsDebit = containsDebit(body);
+                if (containsCredit && !containsDebit) {
+                    sms.setDebito(false);
+                } else if (!containsCredit && containsDebit) {
+                    sms.setDebito(true);
+                } else if (containsCredit && containsDebit) {
+                    Log.w("sms", "No identifier found: " + body);
+                }
+            }
+        }
+        return sms;
     }
 
     private boolean containsCredit(String body) {

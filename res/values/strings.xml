@@ -9,6 +9,8 @@
     <string name="identificao_credito">Identificador de Crédito</string>
     <string name="identificao_debito">Identificador de Débito</string>
     <string name="identificao_ignorar">Identificador para ignorar</string>
+    <string name="identificao_inicio_loja">Identificador para início da loja</string>
+    <string name="identificao_fim_loja">Identificador para fim da loja</string>
     <string name="refresh">Atualizar</string>
     <string name="settings">Configurações</string>
     <string name="clear">Limpar</string>

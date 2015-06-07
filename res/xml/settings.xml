@@ -30,5 +30,17 @@
             android:dependency="read_sms"
             android:title="@string/identificao_ignorar"
             android:defaultValue="negado,negada"/>
+        
+        <EditTextPreference
+            android:key="sms_store_start"
+            android:dependency="read_sms"
+            android:title="@string/identificao_inicio_loja"
+            android:defaultValue="realizada no estab."/>
+        
+        <EditTextPreference
+            android:key="sms_store_end"
+            android:dependency="read_sms"
+            android:title="@string/identificao_fim_loja"
+            android:defaultValue=""/>
     </PreferenceCategory>
 </PreferenceScreen>
